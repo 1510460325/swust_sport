@@ -48,7 +48,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <!--<import resource="classpath:aop/spring-aop.xml"/>-->
+    <import resource="classpath:aop/spring-aop.xml"/>
     <import resource="classpath:mybatis/database.xml"/>
 
     <bean id="mappergenerator" class="org.cn.wzy.util.MapperingGenerator"/>
