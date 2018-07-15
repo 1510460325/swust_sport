@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.User_InfoDao" >
+  <resultMap id="BaseResultMap" type="cn.wzy.sport.entity.User_Info" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="us_name" property="usName" jdbcType="VARCHAR" />
+    <result column="us_password" property="usPassword" jdbcType="VARCHAR" />
+    <result column="us_age" property="usAge" jdbcType="INTEGER" />
+    <result column="us_nickname" property="usNickname" jdbcType="VARCHAR" />
+    <result column="us_sign" property="usSign" jdbcType="VARCHAR" />
+    <result column="us_class" property="usClass" jdbcType="VARCHAR" />
+    <result column="us_major" property="usMajor" jdbcType="VARCHAR" />
+    <result column="us_institution" property="usInstitution" jdbcType="VARCHAR" />
+    <result column="us_roomid" property="usRoomid" jdbcType="INTEGER" />
+    <result column="us_status" property="usStatus" jdbcType="INTEGER" />
+    <result column="us_role" property="usRole" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, us_name, us_password, us_age, us_nickname, us_sign, us_class, us_major, us_institution, 
+    us_roomid, us_status, us_role
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.wzy.sport.entity.User_Info" >
+    insert into user_info (id, us_name, us_password, 
+      us_age, us_nickname, us_sign, 
+      us_class, us_major, us_institution, 
+      us_roomid, us_status, us_role
+      )
+    values (#{id,jdbcType=INTEGER}, #{usName,jdbcType=VARCHAR}, #{usPassword,jdbcType=VARCHAR}, 
+      #{usAge,jdbcType=INTEGER}, #{usNickname,jdbcType=VARCHAR}, #{usSign,jdbcType=VARCHAR}, 
+      #{usClass,jdbcType=VARCHAR}, #{usMajor,jdbcType=VARCHAR}, #{usInstitution,jdbcType=VARCHAR}, 
+      #{usRoomid,jdbcType=INTEGER}, #{usStatus,jdbcType=INTEGER}, #{usRole,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.wzy.sport.entity.User_Info" useGeneratedKeys="true" keyProperty="id">
+    insert into user_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="usName != null" >
+        us_name,
+      </if>
+      <if test="usPassword != null" >
+        us_password,
+      </if>
+      <if test="usAge != null" >
+        us_age,
+      </if>
+      <if test="usNickname != null" >
+        us_nickname,
+      </if>
+      <if test="usSign != null" >
+        us_sign,
+      </if>
+      <if test="usClass != null" >
+        us_class,
+      </if>
+      <if test="usMajor != null" >
+        us_major,
+      </if>
+      <if test="usInstitution != null" >
+        us_institution,
+      </if>
+      <if test="usRoomid != null" >
+        us_roomid,
+      </if>
+      <if test="usStatus != null" >
+        us_status,
+      </if>
+      <if test="usRole != null" >
+        us_role,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="usName != null" >
+        #{usName,jdbcType=VARCHAR},
+      </if>
+      <if test="usPassword != null" >
+        #{usPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="usAge != null" >
+        #{usAge,jdbcType=INTEGER},
+      </if>
+      <if test="usNickname != null" >
+        #{usNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="usSign != null" >
+        #{usSign,jdbcType=VARCHAR},
+      </if>
+      <if test="usClass != null" >
+        #{usClass,jdbcType=VARCHAR},
+      </if>
+      <if test="usMajor != null" >
+        #{usMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="usInstitution != null" >
+        #{usInstitution,jdbcType=VARCHAR},
+      </if>
+      <if test="usRoomid != null" >
+        #{usRoomid,jdbcType=INTEGER},
+      </if>
+      <if test="usStatus != null" >
+        #{usStatus,jdbcType=INTEGER},
+      </if>
+      <if test="usRole != null" >
+        #{usRole,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.wzy.sport.entity.User_Info" >
+    update user_info
+    <set >
+      <if test="usName != null" >
+        us_name = #{usName,jdbcType=VARCHAR},
+      </if>
+      <if test="usPassword != null" >
+        us_password = #{usPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="usAge != null" >
+        us_age = #{usAge,jdbcType=INTEGER},
+      </if>
+      <if test="usNickname != null" >
+        us_nickname = #{usNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="usSign != null" >
+        us_sign = #{usSign,jdbcType=VARCHAR},
+      </if>
+      <if test="usClass != null" >
+        us_class = #{usClass,jdbcType=VARCHAR},
+      </if>
+      <if test="usMajor != null" >
+        us_major = #{usMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="usInstitution != null" >
+        us_institution = #{usInstitution,jdbcType=VARCHAR},
+      </if>
+      <if test="usRoomid != null" >
+        us_roomid = #{usRoomid,jdbcType=INTEGER},
+      </if>
+      <if test="usStatus != null" >
+        us_status = #{usStatus,jdbcType=INTEGER},
+      </if>
+      <if test="usRole != null" >
+        us_role = #{usRole,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.wzy.sport.entity.User_Info" >
+    update user_info
+    set us_name = #{usName,jdbcType=VARCHAR},
+      us_password = #{usPassword,jdbcType=VARCHAR},
+      us_age = #{usAge,jdbcType=INTEGER},
+      us_nickname = #{usNickname,jdbcType=VARCHAR},
+      us_sign = #{usSign,jdbcType=VARCHAR},
+      us_class = #{usClass,jdbcType=VARCHAR},
+      us_major = #{usMajor,jdbcType=VARCHAR},
+      us_institution = #{usInstitution,jdbcType=VARCHAR},
+      us_roomid = #{usRoomid,jdbcType=INTEGER},
+      us_status = #{usStatus,jdbcType=INTEGER},
+      us_role = #{usRole,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

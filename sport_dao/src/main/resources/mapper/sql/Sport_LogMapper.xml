@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.Sport_LogDao" > 
+  <sql id="condition" >
+      WHERE 1 = 1 
+      <if test="query.spName != null" >
+          AND sp_name = #{query.spName,jdbcType=VARCHAR}
+      </if>
+      <if test="query.spType != null" >
+          AND sp_type = #{query.spType,jdbcType=INTEGER}
+      </if>
+      <if test="query.spUserid != null" >
+          AND sp_userid = #{query.spUserid,jdbcType=INTEGER}
+      </if>
+      <if test="query.spSportdate != null" >
+          AND sp_sportdate = #{query.spSportdate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="query.id != null" >
+          AND id = #{query.id,jdbcType=INTEGER}
+      </if>
+  </sql>
+  <sql id="order" >
+
+  </sql>
+  <sql id="limit" >
+      <if test="start != null and rows != null" >
+          LIMIT #{start}, #{rows}
+      </if>
+  </sql>
+</mapper>

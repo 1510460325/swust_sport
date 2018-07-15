@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.RoomDao" > 
+  <sql id="condition" >
+      WHERE 1 = 1 
+      <if test="query.roSportname != null" >
+          AND ro_sportname = #{query.roSportname,jdbcType=VARCHAR}
+      </if>
+      <if test="query.roStartdate != null" >
+          AND ro_startdate = #{query.roStartdate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="query.roEnddate != null" >
+          AND ro_enddate = #{query.roEnddate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="query.roLocation != null" >
+          AND ro_location = #{query.roLocation,jdbcType=VARCHAR}
+      </if>
+      <if test="query.roOrinum != null" >
+          AND ro_orinum = #{query.roOrinum,jdbcType=INTEGER}
+      </if>
+      <if test="query.roNum != null" >
+          AND ro_num = #{query.roNum,jdbcType=INTEGER}
+      </if>
+      <if test="query.roStatus != null" >
+          AND ro_status = #{query.roStatus,jdbcType=INTEGER}
+      </if>
+      <if test="query.roOwnerid != null" >
+          AND ro_ownerid = #{query.roOwnerid,jdbcType=INTEGER}
+      </if>
+      <if test="query.id != null" >
+          AND id = #{query.id,jdbcType=INTEGER}
+      </if>
+  </sql>
+  <sql id="order" >
+
+  </sql>
+  <sql id="limit" >
+      <if test="start != null and rows != null" >
+          LIMIT #{start}, #{rows}
+      </if>
+  </sql>
+</mapper>

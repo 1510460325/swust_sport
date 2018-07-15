@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.User_InfoDao" > 
+  <sql id="condition" >
+      WHERE 1 = 1 
+      <if test="query.usName != null" >
+          AND us_name = #{query.usName,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usPassword != null" >
+          AND us_password = #{query.usPassword,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usAge != null" >
+          AND us_age = #{query.usAge,jdbcType=INTEGER}
+      </if>
+      <if test="query.usNickname != null" >
+          AND us_nickname = #{query.usNickname,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usSign != null" >
+          AND us_sign = #{query.usSign,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usClass != null" >
+          AND us_class = #{query.usClass,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usMajor != null" >
+          AND us_major = #{query.usMajor,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usInstitution != null" >
+          AND us_institution = #{query.usInstitution,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usRoomid != null" >
+          AND us_roomid = #{query.usRoomid,jdbcType=INTEGER}
+      </if>
+      <if test="query.usStatus != null" >
+          AND us_status = #{query.usStatus,jdbcType=INTEGER}
+      </if>
+      <if test="query.usRole != null" >
+          AND us_role = #{query.usRole,jdbcType=INTEGER}
+      </if>
+      <if test="query.id != null" >
+          AND id = #{query.id,jdbcType=INTEGER}
+      </if>
+  </sql>
+  <sql id="order" >
+
+  </sql>
+  <sql id="limit" >
+      <if test="start != null and rows != null" >
+          LIMIT #{start}, #{rows}
+      </if>
+  </sql>
+</mapper>

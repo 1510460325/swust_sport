@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.RoomDao" >
+  <resultMap id="BaseResultMap" type="cn.wzy.sport.entity.Room" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ro_sportname" property="roSportname" jdbcType="VARCHAR" />
+    <result column="ro_startdate" property="roStartdate" jdbcType="TIMESTAMP" />
+    <result column="ro_enddate" property="roEnddate" jdbcType="TIMESTAMP" />
+    <result column="ro_location" property="roLocation" jdbcType="VARCHAR" />
+    <result column="ro_orinum" property="roOrinum" jdbcType="INTEGER" />
+    <result column="ro_num" property="roNum" jdbcType="INTEGER" />
+    <result column="ro_status" property="roStatus" jdbcType="INTEGER" />
+    <result column="ro_ownerid" property="roOwnerid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ro_sportname, ro_startdate, ro_enddate, ro_location, ro_orinum, ro_num, ro_status, 
+    ro_ownerid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from room
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from room
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.wzy.sport.entity.Room" >
+    insert into room (id, ro_sportname, ro_startdate, 
+      ro_enddate, ro_location, ro_orinum, 
+      ro_num, ro_status, ro_ownerid
+      )
+    values (#{id,jdbcType=INTEGER}, #{roSportname,jdbcType=VARCHAR}, #{roStartdate,jdbcType=TIMESTAMP}, 
+      #{roEnddate,jdbcType=TIMESTAMP}, #{roLocation,jdbcType=VARCHAR}, #{roOrinum,jdbcType=INTEGER}, 
+      #{roNum,jdbcType=INTEGER}, #{roStatus,jdbcType=INTEGER}, #{roOwnerid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.wzy.sport.entity.Room" >
+    insert into room
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roSportname != null" >
+        ro_sportname,
+      </if>
+      <if test="roStartdate != null" >
+        ro_startdate,
+      </if>
+      <if test="roEnddate != null" >
+        ro_enddate,
+      </if>
+      <if test="roLocation != null" >
+        ro_location,
+      </if>
+      <if test="roOrinum != null" >
+        ro_orinum,
+      </if>
+      <if test="roNum != null" >
+        ro_num,
+      </if>
+      <if test="roStatus != null" >
+        ro_status,
+      </if>
+      <if test="roOwnerid != null" >
+        ro_ownerid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roSportname != null" >
+        #{roSportname,jdbcType=VARCHAR},
+      </if>
+      <if test="roStartdate != null" >
+        #{roStartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roEnddate != null" >
+        #{roEnddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roLocation != null" >
+        #{roLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="roOrinum != null" >
+        #{roOrinum,jdbcType=INTEGER},
+      </if>
+      <if test="roNum != null" >
+        #{roNum,jdbcType=INTEGER},
+      </if>
+      <if test="roStatus != null" >
+        #{roStatus,jdbcType=INTEGER},
+      </if>
+      <if test="roOwnerid != null" >
+        #{roOwnerid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.wzy.sport.entity.Room" >
+    update room
+    <set >
+      <if test="roSportname != null" >
+        ro_sportname = #{roSportname,jdbcType=VARCHAR},
+      </if>
+      <if test="roStartdate != null" >
+        ro_startdate = #{roStartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roEnddate != null" >
+        ro_enddate = #{roEnddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roLocation != null" >
+        ro_location = #{roLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="roOrinum != null" >
+        ro_orinum = #{roOrinum,jdbcType=INTEGER},
+      </if>
+      <if test="roNum != null" >
+        ro_num = #{roNum,jdbcType=INTEGER},
+      </if>
+      <if test="roStatus != null" >
+        ro_status = #{roStatus,jdbcType=INTEGER},
+      </if>
+      <if test="roOwnerid != null" >
+        ro_ownerid = #{roOwnerid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.wzy.sport.entity.Room" >
+    update room
+    set ro_sportname = #{roSportname,jdbcType=VARCHAR},
+      ro_startdate = #{roStartdate,jdbcType=TIMESTAMP},
+      ro_enddate = #{roEnddate,jdbcType=TIMESTAMP},
+      ro_location = #{roLocation,jdbcType=VARCHAR},
+      ro_orinum = #{roOrinum,jdbcType=INTEGER},
+      ro_num = #{roNum,jdbcType=INTEGER},
+      ro_status = #{roStatus,jdbcType=INTEGER},
+      ro_ownerid = #{roOwnerid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

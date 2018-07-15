@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.Operation_LogDao" >
+  <resultMap id="BaseResultMap" type="cn.wzy.sport.entity.Operation_Log" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="op_userid" property="opUserid" jdbcType="INTEGER" />
+    <result column="op_content" property="opContent" jdbcType="VARCHAR" />
+    <result column="op_date" property="opDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, op_userid, op_content, op_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from operation_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from operation_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.wzy.sport.entity.Operation_Log" >
+    insert into operation_log (id, op_userid, op_content, 
+      op_date)
+    values (#{id,jdbcType=INTEGER}, #{opUserid,jdbcType=INTEGER}, #{opContent,jdbcType=VARCHAR}, 
+      #{opDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.wzy.sport.entity.Operation_Log" >
+    insert into operation_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="opUserid != null" >
+        op_userid,
+      </if>
+      <if test="opContent != null" >
+        op_content,
+      </if>
+      <if test="opDate != null" >
+        op_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="opUserid != null" >
+        #{opUserid,jdbcType=INTEGER},
+      </if>
+      <if test="opContent != null" >
+        #{opContent,jdbcType=VARCHAR},
+      </if>
+      <if test="opDate != null" >
+        #{opDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.wzy.sport.entity.Operation_Log" >
+    update operation_log
+    <set >
+      <if test="opUserid != null" >
+        op_userid = #{opUserid,jdbcType=INTEGER},
+      </if>
+      <if test="opContent != null" >
+        op_content = #{opContent,jdbcType=VARCHAR},
+      </if>
+      <if test="opDate != null" >
+        op_date = #{opDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.wzy.sport.entity.Operation_Log" >
+    update operation_log
+    set op_userid = #{opUserid,jdbcType=INTEGER},
+      op_content = #{opContent,jdbcType=VARCHAR},
+      op_date = #{opDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

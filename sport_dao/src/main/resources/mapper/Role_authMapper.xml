@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.Role_AuthDao" >
+  <resultMap id="BaseResultMap" type="cn.wzy.sport.entity.Role_Auth" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ro_urlid" property="roUrlid" jdbcType="INTEGER" />
+    <result column="ro_allowrole" property="roAllowrole" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, ro_urlid, ro_allowrole
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from role_auth
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from role_auth
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.wzy.sport.entity.Role_Auth" >
+    insert into role_auth (id, ro_urlid, ro_allowrole
+      )
+    values (#{id,jdbcType=INTEGER}, #{roUrlid,jdbcType=INTEGER}, #{roAllowrole,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.wzy.sport.entity.Role_Auth" >
+    insert into role_auth
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="roUrlid != null" >
+        ro_urlid,
+      </if>
+      <if test="roAllowrole != null" >
+        ro_allowrole,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roUrlid != null" >
+        #{roUrlid,jdbcType=INTEGER},
+      </if>
+      <if test="roAllowrole != null" >
+        #{roAllowrole,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.wzy.sport.entity.Role_Auth" >
+    update role_auth
+    <set >
+      <if test="roUrlid != null" >
+        ro_urlid = #{roUrlid,jdbcType=INTEGER},
+      </if>
+      <if test="roAllowrole != null" >
+        ro_allowrole = #{roAllowrole,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.wzy.sport.entity.Role_Auth" >
+    update role_auth
+    set ro_urlid = #{roUrlid,jdbcType=INTEGER},
+      ro_allowrole = #{roAllowrole,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

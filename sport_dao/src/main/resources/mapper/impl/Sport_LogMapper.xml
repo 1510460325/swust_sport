@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.Sport_LogDao" > 
+  <select id="selectByCondition" parameterType="org.cn.wzy.query.BaseQuery" resultMap="BaseResultMap"> 
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM sport_log
+      <include refid="condition"/>
+      <include refid="order" />
+      <include refid="limit" />
+  </select>
+  <select id="selectCountByCondition" parameterType="org.cn.wzy.query.BaseQuery" resultType="java.lang.Integer"> 
+      SELECT
+      COUNT(*)
+      FROM sport_log
+      <include refid="condition"/>
+  </select>
+  <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="false">
+      <foreach collection="list" item="item" index="index" separator=";" >
+      INSERT into sport_log
+      (sp_name,sp_type,sp_userid,sp_sportdate)
+      VALUES
+      (#{item.spName,jdbcType=VARCHAR},#{item.spType,jdbcType=INTEGER},#{item.spUserid,jdbcType=INTEGER},#{item.spSportdate,jdbcType=TIMESTAMP})
+      </foreach>
+  </insert>
+  <delete id="deleteByIdsList" parameterType="java.util.List">
+      DELETE FROM sport_log
+      WHERE id IN
+      <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+          #{item}
+      </foreach>
+  </delete>
+  <select id="selectByIds" parameterType="java.util.List" resultMap="BaseResultMap"> 
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM sport_log
+      WHERE id In
+      <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+          #{item}
+      </foreach>
+  </select>
+</mapper>

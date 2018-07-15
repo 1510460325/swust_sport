@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	 开启切面
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!--权限拦截-->
+	<bean id="access" class="cn.wzy.sport.aop.AccessAspect"/>
+	<!--错误日志收集-->
+	<bean id="errorLog" class="cn.wzy.sport.aop.ErrorLog" />
+
+	<aop:config>
+		<aop:pointcut id="controllerPoint" expression="execution(* cn.wzy.sport.controller.*.*(..))"/>
+		<aop:pointcut id="serviceErrprLogPoint" expression="execution(* cn.wzy.sport.service.impl.*.*(..)) ||
+														execution(* cn.wzy.sport.dao.impl.*.*(..)) ||
+														execution(* org.cn.wzy.dao.impl.BaseDaoImpl.*(..))"/>
+	</aop:config>
+	<aop:config>
+		<aop:aspect id="accessAspect" ref="access" order="1">
+			<aop:around method="checkAccess" pointcut-ref="controllerPoint"/>
+		</aop:aspect>
+		<aop:aspect id="log" ref="errorLog" order="2">
+			<aop:after-throwing method="serviceError" pointcut-ref="serviceErrprLogPoint" throwing="e"/>
+			<aop:around method="controllerError" pointcut-ref="controllerPoint" />
+		</aop:aspect>
+	</aop:config>
+
+	<!--事务切面-->
+	<import resource="classpath:/aop/spring-tx.xml"/>
+
+</beans>

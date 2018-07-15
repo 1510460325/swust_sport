@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wzy.sport.dao.User_AuthDao" >
+  <resultMap id="BaseResultMap" type="cn.wzy.sport.entity.User_Auth" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="us_url" property="usUrl" jdbcType="VARCHAR" />
+    <result column="us_desc" property="usDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, us_url, us_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_auth
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_auth
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.wzy.sport.entity.User_Auth" >
+    insert into user_auth (id, us_url, us_desc
+      )
+    values (#{id,jdbcType=INTEGER}, #{usUrl,jdbcType=VARCHAR}, #{usDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.wzy.sport.entity.User_Auth" >
+    insert into user_auth
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="usUrl != null" >
+        us_url,
+      </if>
+      <if test="usDesc != null" >
+        us_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="usUrl != null" >
+        #{usUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="usDesc != null" >
+        #{usDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.wzy.sport.entity.User_Auth" >
+    update user_auth
+    <set >
+      <if test="usUrl != null" >
+        us_url = #{usUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="usDesc != null" >
+        us_desc = #{usDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.wzy.sport.entity.User_Auth" >
+    update user_auth
+    set us_url = #{usUrl,jdbcType=VARCHAR},
+      us_desc = #{usDesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
