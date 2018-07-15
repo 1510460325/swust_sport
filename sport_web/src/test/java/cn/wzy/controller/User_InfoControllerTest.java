@@ -23,4 +23,27 @@ public class User_InfoControllerTest extends BaseControllerTest {
                 );
         System.out.println(resultActions.andReturn().getResponse().getContentAsString());
     }
+    @Test
+    public void login() throws Exception {
+        ResultActions resultActions = this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/user/login.do")
+                        .param("usName","5120162154")
+                        .param("usPassword","asdf")
+                        .param("verifyCode","1123")
+                        .param("code","1234")
+                );
+        System.out.println(resultActions.andReturn().getResponse().getContentAsString());
+    }
+
+    @Test
+    public void verify() throws Exception {
+        ResultActions resultActions = this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/verify/getVerify.do")
+                        .param("usName","5120162154")
+                        .param("usPassword","asdf")
+                        .param("verifyCode","1123")
+                        .param("code","1234")
+                );
+        System.out.println(resultActions.andReturn().getResponse().getContentAsString());
+    }
 }

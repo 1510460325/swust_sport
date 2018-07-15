@@ -2,6 +2,7 @@ package cn.wzy.service;
 
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
+import cn.wzy.sport.service.model.LoginResult;
 import cn.wzy.util.BaseDaoTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class User_InfoServiceTest extends BaseDaoTest {
     private User_InfoService user_infoService;
 
     @Test
-    public void test() {
+    public void register() {
         User_Info record = new User_Info();
         record.setUsName("asdf");
         record.setUsPassword("asdf");
@@ -25,4 +26,15 @@ public class User_InfoServiceTest extends BaseDaoTest {
         System.out.println(user_infoService.register(record));
         record.getId();
     }
+
+    @Test
+    public void login() {
+        User_Info user_info = new User_Info()
+                .setUsName("5120162154")
+                .setUsPassword("asdf");
+        LoginResult result = user_infoService.login(user_info,"asdf","1234");
+        System.out.println(result);
+
+    }
+
 }

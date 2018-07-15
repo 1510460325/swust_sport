@@ -10,4 +10,5 @@ public abstract class UserConstant {
     public static final int NOT_EXIST = 2;
     public static final int PWD_WRONG = 3;
     public static final int VERIFI_ERROR = 4;
+    public static final int USER_LOCK = 5;
 }

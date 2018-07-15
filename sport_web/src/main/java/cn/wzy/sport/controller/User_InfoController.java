@@ -30,4 +30,12 @@ public class User_InfoController extends BaseController {
                 .code(SUCCESS)
                 .build();
     }
+    @ResponseBody
+    @RequestMapping(value = "/login.do",method = RequestMethod.GET)
+    public ResultModel login(User_Info user_info, String verifyCode, String code) {
+        return new ResultModel().builder()
+                .data(user_infoService.login(user_info,verifyCode,code))
+                .code(SUCCESS)
+                .build();
+    }
 }

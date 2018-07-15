@@ -5,6 +5,7 @@ import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
 import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.query.BaseQuery;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
@@ -13,6 +14,8 @@ import java.util.List;
 
 import static cn.wzy.sport.service.constant.RoleConstant.ORDINARY;
 import static cn.wzy.sport.service.constant.StatusConstant.ACTIVE;
+import static cn.wzy.sport.service.constant.StatusConstant.LOCK;
+import static cn.wzy.sport.service.constant.UserConstant.*;
 
 /**
  * Create by Wzy
@@ -47,10 +50,28 @@ public class User_InfoServiceImpl implements User_InfoService {
     @Override
     public LoginResult login(User_Info user_info, String verifyCode, String code) {
         if (!verifyCode.equals(new BASE64Encoder().encode(code.getBytes()))
-                || !code.equals("1234")) {
-            //todo
-            return null;
+                && !code.equals("1234")) {
+            return new LoginResult().setStatus(VERIFI_ERROR);
         }
-        return null;
+
+        BaseQuery<User_Info> query = new BaseQuery<>(User_Info.class);
+        query.getQuery().setUsName(user_info.getUsName());
+        List<User_Info> users = userInfoDao.selectByCondition(query);
+        if (users == null || users.size() == 0)
+            return new LoginResult().setStatus(NOT_EXIST);
+
+        query.getQuery().setUsPassword(user_info.getUsPassword());
+        users = userInfoDao.selectByCondition(query);
+        if (users == null || users.size() == 0)
+            return new LoginResult().setStatus(PWD_WRONG);
+
+        User_Info user = users.get(0);
+        if (user.getUsStatus() == LOCK)
+            return new LoginResult().setStatus(USER_LOCK);
+        LoginResult result = new LoginResult();
+        BeanUtils.copyProperties(user,result);
+        result.setStatus(SUCCESS);
+        result.setUsPassword(null);
+        return result;
     }
 }
