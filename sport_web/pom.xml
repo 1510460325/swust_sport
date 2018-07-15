@@ -32,7 +32,7 @@
     </dependencies>
 
     <build>
-        <finalName>sport_web</finalName>
+        <finalName>sport</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>
