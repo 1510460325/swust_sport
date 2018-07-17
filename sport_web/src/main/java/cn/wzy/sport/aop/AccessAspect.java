@@ -1,9 +1,12 @@
 package cn.wzy.sport.aop;
 
+import cn.wzy.sport.dao.Operation_LogDao;
 import cn.wzy.sport.dao.Role_AuthDao;
 import cn.wzy.sport.dao.User_AuthDao;
+import cn.wzy.sport.entity.Operation_Log;
 import cn.wzy.sport.entity.Role_Auth;
 import cn.wzy.sport.entity.User_Auth;
+import lombok.experimental.Accessors;
 import lombok.extern.log4j.Log4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.cn.wzy.controller.BaseController;
@@ -13,6 +16,7 @@ import org.cn.wzy.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 import static cn.wzy.sport.constant.CodeConstant.ILLEGAL_ACCESS_ERROR;
@@ -25,10 +29,16 @@ import static cn.wzy.sport.service.constant.RoleConstant.VISITOR;
 @Log4j
 public class AccessAspect {
     private static final String WEBAPP_CONTEXT = "/sport";
+
     @Autowired
     private Role_AuthDao role_authDao;
+
     @Autowired
     private User_AuthDao user_authDao;
+
+    @Autowired
+    private Operation_LogDao operation_logDao;
+
 
     public Object checkAccess(ProceedingJoinPoint joinPoint) throws Throwable {
         BaseController controller = (BaseController) joinPoint.getTarget();
@@ -48,7 +58,18 @@ public class AccessAspect {
         }
         // 获取查询url
         String search_url = methodName + ":" + api;
+
+        userId = userId == null ? -1 : userId;
+        //日志记录
+        Operation_Log record = new Operation_Log();
+        record.setOpUserid(userId);
+        record.setOpDate(new Date());
+        record.setOpContent("roleId:" + roleId + "& userId:" + userId + "访问接口" + search_url);
+        operation_logDao.insert(record);
         log.info("roleId:" + roleId + "& userId:" + userId + "访问接口" + search_url);
+
+
+
         BaseQuery<User_Auth> urlQuery = new BaseQuery<>(User_Auth.class);
         urlQuery.getQuery().setUsUrl(search_url);
         List<User_Auth> list = user_authDao.selectByCondition(urlQuery);

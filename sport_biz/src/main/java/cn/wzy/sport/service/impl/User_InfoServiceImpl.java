@@ -74,4 +74,9 @@ public class User_InfoServiceImpl implements User_InfoService {
         result.setUsPassword(null);
         return result;
     }
+
+    @Override
+    public User_Info queryUser(Integer userId) {
+        return userInfoDao.selectByPrimaryKey(userId).setUsPassword(null);
+    }
 }
