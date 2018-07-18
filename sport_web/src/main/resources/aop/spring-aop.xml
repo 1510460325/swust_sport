@@ -9,6 +9,8 @@
 
 	<!--开启切面-->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!--jwt注入-->
+	<bean id="jwt" class="org.cn.wzy.aop.JwtAspect"/>
 	<!--权限拦截-->
 	<bean id="access" class="cn.wzy.sport.aop.AccessAspect"/>
 	<!--错误日志收集-->
@@ -21,10 +23,13 @@
 														execution(* org.cn.wzy.dao.impl.BaseDaoImpl.*(..))"/>
 	</aop:config>
 	<aop:config>
-		<aop:aspect id="accessAspect" ref="access" order="1">
+		<aop:aspect id="jwtAspect" ref="jwt" order="1">
+			<aop:around method="checkJwt" pointcut-ref="controllerPoint"/>
+		</aop:aspect>
+		<aop:aspect id="accessAspect" ref="access" order="2">
 			<aop:around method="checkAccess" pointcut-ref="controllerPoint"/>
 		</aop:aspect>
-		<aop:aspect id="log" ref="errorLog" order="2">
+		<aop:aspect id="log" ref="errorLog" order="3">
 			<aop:after-throwing method="serviceError" pointcut-ref="serviceErrprLogPoint" throwing="e"/>
 			<aop:around method="controllerError" pointcut-ref="controllerPoint" />
 		</aop:aspect>

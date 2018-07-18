@@ -45,10 +45,10 @@ public class AccessAspect {
         HttpServletRequest request = controller.getRequest();
 
         //从jwt中获取请求者的roleId
-        int roleId;
-        Integer id = (Integer) TokenUtil.tokenValueOf(request.getHeader("Authorization"), "roleId");
-        roleId = id == null ? VISITOR : id;
-        Integer userId = (Integer) TokenUtil.tokenValueOf(request.getHeader("Authorization"), "userId");
+        Integer roleId = (Integer) controller.getValue("roleId");
+        roleId = roleId == null ? VISITOR : roleId;
+        Integer userId = (Integer) controller.getValue("userId");
+        userId = userId == null ? -1 : userId;
         String api = request.getRequestURI().replaceAll(WEBAPP_CONTEXT, "");
         // 获取请求方法
         String methodName = request.getMethod();
@@ -59,7 +59,6 @@ public class AccessAspect {
         // 获取查询url
         String search_url = methodName + ":" + api;
 
-        userId = userId == null ? -1 : userId;
         //日志记录
         Operation_Log record = new Operation_Log();
         record.setOpUserid(userId);
