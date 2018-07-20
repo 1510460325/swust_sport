@@ -2,6 +2,9 @@ package cn.wzy.sport.service;
 
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.model.LoginResult;
+import org.cn.wzy.query.BaseQuery;
+
+import java.util.List;
 
 /**
  * Create by Wzy
@@ -31,4 +34,21 @@ public interface User_InfoService {
      * @return
      */
     User_Info queryUser(Integer userId);
+
+    /**
+     * 条件查询所有用户
+     * @param user_info
+     * @param query
+     * @return
+     */
+    List<User_Info> queryUsers(User_Info user_info, BaseQuery<User_Info> query);
+
+    /**
+     * 条件查询个数
+     * @param user_info
+     * @return
+     */
+    int queryCountByCondition(User_Info user_info);
+
+    int update(User_Info user_info);
 }

@@ -9,6 +9,12 @@
       <if test="query.usPassword != null" >
           AND us_password = #{query.usPassword,jdbcType=VARCHAR}
       </if>
+      <if test="query.usImg != null" >
+          AND us_img = #{query.usImg,jdbcType=VARCHAR}
+      </if>
+      <if test="query.usSex != null" >
+          AND us_sex = #{query.usSex,jdbcType=INTEGER}
+      </if>
       <if test="query.usAge != null" >
           AND us_age = #{query.usAge,jdbcType=INTEGER}
       </if>

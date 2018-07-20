@@ -16,6 +16,10 @@ public class User_Info {
 
     private String usPassword;
 
+    private String usImg;
+
+    private Integer usSex;
+
     private Integer usAge;
 
     private String usNickname;

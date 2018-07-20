@@ -79,4 +79,29 @@ public class User_InfoServiceImpl implements User_InfoService {
     public User_Info queryUser(Integer userId) {
         return userInfoDao.selectByPrimaryKey(userId).setUsPassword(null);
     }
+
+    @Override
+    public int queryCountByCondition(User_Info user_info) {
+        BaseQuery<User_Info> query = new BaseQuery<>();
+        query.setQuery(user_info);
+        return userInfoDao.selectCountByCondition(query);
+    }
+
+    @Override
+    public List<User_Info> queryUsers(User_Info user_info, BaseQuery<User_Info> query) {
+        query.setQuery(user_info);
+        List<User_Info> list = userInfoDao.selectByCondition(query);
+        if (list == null || list.size() == 0) {
+            return null;
+        }
+        for (User_Info user:list) {
+            user.setUsPassword(null);
+        }
+        return list;
+    }
+
+    @Override
+    public int update(User_Info user_info) {
+        return this.userInfoDao.updateByPrimaryKeySelective(user_info);
+    }
 }

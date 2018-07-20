@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-reboot.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-grid.min.css" rel="stylesheet">
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/whole.js"></script>
+
+    <link href="../css/login.css" rel="stylesheet">
+    <script src="../js/login.js"></script>
+    <title>登录</title>
+</head>
+<body>
+    <div id="top">
+
+    </div>
+    <div style="text-align: center;">
+        <br/>
+        <form style="margin: auto;width: 30%;">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">账 号</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Username" id="usr">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text">密 码</span>
+                </div>
+                <input type="password" class="form-control" placeholder="Password" id="pass">
+            </div>
+
+            <div class="input-group mb-3" style="width: 350px"  >
+                <div class="input-group-append">
+                    <span class="input-group-text">验证码</span>
+                </div>
+                <input type="text" class="form-control" placeholder="verify" id="verify">
+                <img id="verifyImg" src="" style="margin-left: 10px" onclick="refreshVerify()"/>
+            </div>
+            <button type="reset" class="btn btn-primary">Reset</button>
+            <button type="button" onclick="login()" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

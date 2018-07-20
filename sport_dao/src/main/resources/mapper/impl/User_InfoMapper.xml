@@ -18,9 +18,9 @@
   <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="false">
       <foreach collection="list" item="item" index="index" separator=";" >
       INSERT into user_info
-      (us_name,us_password,us_age,us_nickname,us_sign,us_class,us_major,us_institution,us_roomid,us_status,us_role)
+      (us_name,us_password,us_img,us_sex,us_age,us_nickname,us_sign,us_class,us_major,us_institution,us_roomid,us_status,us_role)
       VALUES
-      (#{item.usName,jdbcType=VARCHAR},#{item.usPassword,jdbcType=VARCHAR},#{item.usAge,jdbcType=INTEGER},#{item.usNickname,jdbcType=VARCHAR},#{item.usSign,jdbcType=VARCHAR},#{item.usClass,jdbcType=VARCHAR},#{item.usMajor,jdbcType=VARCHAR},#{item.usInstitution,jdbcType=VARCHAR},#{item.usRoomid,jdbcType=INTEGER},#{item.usStatus,jdbcType=INTEGER},#{item.usRole,jdbcType=INTEGER})
+      (#{item.usName,jdbcType=VARCHAR},#{item.usPassword,jdbcType=VARCHAR},#{item.usImg,jdbcType=VARCHAR},#{item.usSex,jdbcType=INTEGER},#{item.usAge,jdbcType=INTEGER},#{item.usNickname,jdbcType=VARCHAR},#{item.usSign,jdbcType=VARCHAR},#{item.usClass,jdbcType=VARCHAR},#{item.usMajor,jdbcType=VARCHAR},#{item.usInstitution,jdbcType=VARCHAR},#{item.usRoomid,jdbcType=INTEGER},#{item.usStatus,jdbcType=INTEGER},#{item.usRole,jdbcType=INTEGER})
       </foreach>
   </insert>
   <delete id="deleteByIdsList" parameterType="java.util.List">

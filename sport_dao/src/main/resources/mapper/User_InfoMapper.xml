@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="us_name" property="usName" jdbcType="VARCHAR" />
     <result column="us_password" property="usPassword" jdbcType="VARCHAR" />
+    <result column="us_img" property="usImg" jdbcType="VARCHAR" />
+    <result column="us_sex" property="usSex" jdbcType="INTEGER" />
     <result column="us_age" property="usAge" jdbcType="INTEGER" />
     <result column="us_nickname" property="usNickname" jdbcType="VARCHAR" />
     <result column="us_sign" property="usSign" jdbcType="VARCHAR" />
@@ -16,8 +18,8 @@
     <result column="us_role" property="usRole" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, us_name, us_password, us_age, us_nickname, us_sign, us_class, us_major, us_institution, 
-    us_roomid, us_status, us_role
+    id, us_name, us_password, us_img, us_sex, us_age, us_nickname, us_sign, us_class, 
+    us_major, us_institution, us_roomid, us_status, us_role
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -31,17 +33,17 @@
   </delete>
   <insert id="insert" parameterType="cn.wzy.sport.entity.User_Info" >
     insert into user_info (id, us_name, us_password, 
-      us_age, us_nickname, us_sign, 
-      us_class, us_major, us_institution, 
-      us_roomid, us_status, us_role
-      )
+      us_img, us_sex, us_age, 
+      us_nickname, us_sign, us_class, 
+      us_major, us_institution, us_roomid, 
+      us_status, us_role)
     values (#{id,jdbcType=INTEGER}, #{usName,jdbcType=VARCHAR}, #{usPassword,jdbcType=VARCHAR}, 
-      #{usAge,jdbcType=INTEGER}, #{usNickname,jdbcType=VARCHAR}, #{usSign,jdbcType=VARCHAR}, 
-      #{usClass,jdbcType=VARCHAR}, #{usMajor,jdbcType=VARCHAR}, #{usInstitution,jdbcType=VARCHAR}, 
-      #{usRoomid,jdbcType=INTEGER}, #{usStatus,jdbcType=INTEGER}, #{usRole,jdbcType=INTEGER}
-      )
+      #{usImg,jdbcType=VARCHAR}, #{usSex,jdbcType=INTEGER}, #{usAge,jdbcType=INTEGER}, 
+      #{usNickname,jdbcType=VARCHAR}, #{usSign,jdbcType=VARCHAR}, #{usClass,jdbcType=VARCHAR}, 
+      #{usMajor,jdbcType=VARCHAR}, #{usInstitution,jdbcType=VARCHAR}, #{usRoomid,jdbcType=INTEGER}, 
+      #{usStatus,jdbcType=INTEGER}, #{usRole,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="cn.wzy.sport.entity.User_Info" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="cn.wzy.sport.entity.User_Info" >
     insert into user_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -52,6 +54,12 @@
       </if>
       <if test="usPassword != null" >
         us_password,
+      </if>
+      <if test="usImg != null" >
+        us_img,
+      </if>
+      <if test="usSex != null" >
+        us_sex,
       </if>
       <if test="usAge != null" >
         us_age,
@@ -91,6 +99,12 @@
       <if test="usPassword != null" >
         #{usPassword,jdbcType=VARCHAR},
       </if>
+      <if test="usImg != null" >
+        #{usImg,jdbcType=VARCHAR},
+      </if>
+      <if test="usSex != null" >
+        #{usSex,jdbcType=INTEGER},
+      </if>
       <if test="usAge != null" >
         #{usAge,jdbcType=INTEGER},
       </if>
@@ -129,6 +143,12 @@
       <if test="usPassword != null" >
         us_password = #{usPassword,jdbcType=VARCHAR},
       </if>
+      <if test="usImg != null" >
+        us_img = #{usImg,jdbcType=VARCHAR},
+      </if>
+      <if test="usSex != null" >
+        us_sex = #{usSex,jdbcType=INTEGER},
+      </if>
       <if test="usAge != null" >
         us_age = #{usAge,jdbcType=INTEGER},
       </if>
@@ -163,6 +183,8 @@
     update user_info
     set us_name = #{usName,jdbcType=VARCHAR},
       us_password = #{usPassword,jdbcType=VARCHAR},
+      us_img = #{usImg,jdbcType=VARCHAR},
+      us_sex = #{usSex,jdbcType=INTEGER},
       us_age = #{usAge,jdbcType=INTEGER},
       us_nickname = #{usNickname,jdbcType=VARCHAR},
       us_sign = #{usSign,jdbcType=VARCHAR},

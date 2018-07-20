@@ -8,12 +8,14 @@ import cn.wzy.sport.service.model.LoginResult;
 import io.jsonwebtoken.Claims;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
+import org.cn.wzy.query.BaseQuery;
 import org.cn.wzy.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.cn.wzy.model.ResultModel.SUCCESS;
@@ -83,5 +85,60 @@ public class User_InfoController extends BaseController {
                 .code(SUCCESS)
                 .data(user_infoService.queryUser(userId))
                 .build();
+    }
+
+    /**
+     * 条件查询所有用户
+     * @param user_info
+     * @param query
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/users.do",method = RequestMethod.GET)
+    public ResultModel Usersquery (User_Info user_info, BaseQuery<User_Info> query) {
+        List<User_Info> result = user_infoService.queryUsers(user_info,query);
+        return new ResultModel().builder()
+                .code(SUCCESS)
+                .data(result)
+                .total(result == null ? 0 : result.size())
+                .build();
+    }
+
+    /**
+     * 查询所有的个数
+     * @param user_info
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/userCount.do",method = RequestMethod.GET)
+    public ResultModel queryCount(User_Info user_info) {
+        return new ResultModel().builder()
+                .code(SUCCESS)
+                .data(user_infoService.queryCountByCondition(user_info))
+                .build();
+    }
+
+    /**
+     * 更新个人信息
+     * @param user_info
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/update.do",method = RequestMethod.PUT)
+    public ResultModel update(User_Info user_info) {
+        checkAccess(user_info);
+        return new ResultModel().builder()
+                .code(SUCCESS)
+                .data(user_infoService.update(user_info))
+                .build();
+    }
+
+    private void checkAccess(User_Info user_info) {
+        Integer roleId = (Integer) ValueOfClaims("roleId");
+        Integer userId = (Integer) ValueOfClaims("userId");
+        if (roleId != 1) {
+            user_info.setId(userId);
+            user_info.setUsRole(null);
+        }
     }
 }

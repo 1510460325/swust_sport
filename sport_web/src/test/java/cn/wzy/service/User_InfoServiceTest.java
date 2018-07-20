@@ -7,6 +7,12 @@ import cn.wzy.util.BaseDaoTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static cn.wzy.sport.service.constant.RoleConstant.ORDINARY;
+import static cn.wzy.sport.service.constant.StatusConstant.ACTIVE;
+
 /**
  * Create by Wzy
  * on 2018/7/14 12:36
@@ -19,12 +25,7 @@ public class User_InfoServiceTest extends BaseDaoTest {
 
     @Test
     public void register() {
-        User_Info record = new User_Info();
-        record.setUsName("asdf");
-        record.setUsPassword("asdf");
-        record.setUsNickname("asdf");
-        System.out.println(user_infoService.register(record));
-        record.getId();
+
     }
 
     @Test

@@ -28,7 +28,7 @@ import static cn.wzy.sport.service.constant.RoleConstant.VISITOR;
  */
 @Log4j
 public class AccessAspect {
-    private static final String WEBAPP_CONTEXT = "/sport";
+    private static final String WEBAPP_CONTEXT = "/api";
 
     @Autowired
     private Role_AuthDao role_authDao;
@@ -45,9 +45,9 @@ public class AccessAspect {
         HttpServletRequest request = controller.getRequest();
 
         //从jwt中获取请求者的roleId
-        Integer roleId = (Integer) controller.getValue("roleId");
+        Integer roleId = (Integer) controller.ValueOfClaims("roleId");
         roleId = roleId == null ? VISITOR : roleId;
-        Integer userId = (Integer) controller.getValue("userId");
+        Integer userId = (Integer) controller.ValueOfClaims("userId");
         userId = userId == null ? -1 : userId;
         String api = request.getRequestURI().replaceAll(WEBAPP_CONTEXT, "");
         // 获取请求方法

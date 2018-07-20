@@ -1,0 +1,12 @@
+.split{
+    height: 20px;
+    width: 20px;
+}
+#admin{
+    float: right;margin-right: 10px;
+    text-align: right;
+}
+#maxDiv {
+    border: 1px red solid;
+    width: 85%;
+}
