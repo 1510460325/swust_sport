@@ -103,22 +103,23 @@ public class User_InfoDaoTest extends BaseDaoTest {
     @Test
     public void insertRooms() {
         List<Room> list = new ArrayList<>(15);
-        String[] location = new String[6];
+        String[] location = new String[7];
         location[0] = "新区";
         location[1] = "中区";
         location[2] = "老区";
         location[3] = "篮球";
         location[4] = "足球";
         location[5] = "乒乓球";
+        location[6] = "橄榄球";
         for (int i = 0; i < 15; i++) {
             Room room = new Room();
             room.setRoEnddate(new Date())
                     .setRoStartdate(new Date())
-                    .setRoSportname(location[i % 3])
-                    .setRoLocation(location[i % 3 + 3])
+                    .setRoSportname(location[i % 4 + 3])
+                    .setRoLocation(location[i % 3])
                     .setRoNum(15)
                     .setRoOrinum(20)
-                    .setRoOwnerid(1 + i % 3)
+                    .setRoOwnerid(1 + i * i % 3)
                     .setRoStatus(1);
             list.add(room);
         }
