@@ -1,0 +1,28 @@
+.split{
+    height: 20px;
+    width: 20px;
+}
+#admin{
+    float: right;margin-right: 10px;
+    text-align: right;
+}
+#maxDiv {
+    width: 45%;
+}
+#roomsDiv{
+    border:1px red dashed;
+    height: 300px;
+    overflow-y: auto;
+}
+#usersDiv{
+    border:1px blue dashed;
+    height: 300px;
+    overflow-y: auto;
+}
+#contentPage{
+    margin-top: 54px;
+    width: 45%;
+    border: 1px gold dashed;
+    height: 674px;
+    overflow-y: auto;
+}

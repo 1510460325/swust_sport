@@ -6,14 +6,14 @@ $(document).ready(function () {
 });
 
 function refreshClick() {
-    $('#myModal').on('show.bs.modal', function (event) {
+    $('#myModal').off("click").on('show.bs.modal', function (event) {
         var btnThis = $(event.relatedTarget); //触发事件的按钮
         var id = btnThis.data('id');   //解析出data-id的内容
         var name = btnThis.data('name');
         $("#nowId").html(id);
         $("#name").val(name);
     });
-    $(".delete_this").click(function () {
+    $(".delete_this").off("click").click(function () {
         var btnThis = $(this);
         var id = btnThis.data("id");
         var data = {};

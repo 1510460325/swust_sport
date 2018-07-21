@@ -11,8 +11,8 @@
     <script src="../js/config.js"></script>
     <script src="../js/whole.js"></script>
 
-    <script src="../js/sport.js"></script>
-    <link href="../css/main.css" rel="stylesheet">
+    <script src="../js/message.js"></script>
+    <link href="../css/message.css" rel="stylesheet">
 
     <title>聊天监测</title>
 </head>
@@ -43,7 +43,7 @@
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="main.html" >用户管理</a>
+                    <a class="nav-link" href="main.html">用户管理</a>
                 </li>
             </ul>
         </nav>
@@ -70,6 +70,93 @@
                 </li>
             </ul>
         </nav>
+    </div>
+    <div class="split"></div>
+    <div id="maxDiv">
+        <div>
+            <form style="display: flex">
+                <div class="input-group mb-3" style="width: 250px">
+                    <span class="input-group-text">房间号</span>
+                    <input type="text" class="form-control" placeholder="roomId" id="roomId">
+                </div>
+                <div class="split"></div>
+                <div>
+                    <button type="button" onclick="queryRooms()" class="btn btn-primary">查询</button>
+                </div>
+            </form>
+            <div id="roomsDiv">
+                <table class="table">
+                    <thead style="">
+                    <tr>
+                        <th>房间号</th>
+                        <th>名称</th>
+                        <th>创建者ID</th>
+                        <th>总人数/理想人数</th>
+                        <th>状态</th>
+                        <th>查看聊天</th>
+                    </tr>
+                    </thead>
+                    <tbody id="rooms">
+                    <tr><td>暂无数据</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="split"></div>
+        <div>
+            <form style="display: flex">
+                <div class="input-group mb-3" style="width: 250px">
+                    <span class="input-group-text">房间号</span>
+                    <input type="text" class="form-control" placeholder="roomId" id="Id">
+                </div>
+                <div class="split"></div>
+                <div class="input-group mb-3" style="width: 250px">
+                    <span class="input-group-text">用户名</span>
+                    <input type="text" class="form-control" placeholder="Username" id="username">
+                </div>
+                <div class="split"></div>
+                <div>
+                    <button type="button" onclick="queryUserMessage()" class="btn btn-primary">查询</button>
+                </div>
+            </form>
+            <div id="usersDiv">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>房间号</th>
+                        <th>用户</th>
+                        <th>条数</th>
+                        <th>大概时间</th>
+                        <th>查看聊天</th>
+                    </tr>
+                    </thead>
+                    <tbody id="users">
+                    <tr><td>暂无数据</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="split"></div>
+    <div id="contentPage">
+        <div style="text-align: center">
+            房间：<span id="roomName">-</span>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>用户</th>
+                <th>内容</th>
+                <th>时间</th>
+                <th>封停/解封</th>
+            </tr>
+            </thead>
+            <tbody id="contents">
+                <tr>
+                    <td>暂无数据</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

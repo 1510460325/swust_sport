@@ -8,7 +8,7 @@ $(document).ready(function () {
  * 删除反馈
  */
 function refreshClick() {
-    $(".delete_complain").click(function () {
+    $(".delete_complain").off("click").click(function () {
         var btnThis = $(this);
         var id = btnThis.data('id');
         var data = {

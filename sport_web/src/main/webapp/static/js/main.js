@@ -8,7 +8,7 @@ $(document).ready(function () {
 });
 
 function refreshClick() {
-    $('#myModal').on('show.bs.modal', function (event) {
+    $('#myModal').off("click").on('show.bs.modal', function (event) {
         var btnThis = $(event.relatedTarget); //触发事件的按钮
         var Id = btnThis.data('id');   //解析出data-id的内容
         var role = btnThis.data('role');
@@ -17,7 +17,7 @@ function refreshClick() {
         $("#password").val("");
     });
 
-    $(".change_status").click(function () {
+    $(".change_status").off("click").click(function () {
         var btnThis = $(this);
         var userId = btnThis.data('id');
         var status = btnThis.data('status');
