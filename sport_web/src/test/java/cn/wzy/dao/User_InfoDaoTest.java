@@ -152,4 +152,6 @@ public class User_InfoDaoTest extends BaseDaoTest {
         }
         user_messageDao.insertList(list);
     }
+
+
 }

@@ -105,7 +105,6 @@ function usersQuery(withPage) {
     var start = nowPage;
     if (start == null)
         start = 1;
-    start = (start - 1) * 20;
 
     var data = {
         "usName": username,

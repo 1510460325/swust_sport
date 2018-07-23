@@ -3,14 +3,13 @@ package cn.wzy.sport.service.impl;
 import cn.wzy.sport.dao.Sport_InfoDao;
 import cn.wzy.sport.entity.Sport_Info;
 import cn.wzy.sport.service.Sport_InfoService;
-import cn.wzy.sport.service.util.FileUtil;
 import org.cn.wzy.query.BaseQuery;
 import org.cn.wzy.util.PropertiesUtil;
+import org.cn.wzy.util.StreamsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -39,20 +38,20 @@ public class Sport_InfoServiceImpl implements Sport_InfoService {
         }
         String relativePath = PropertiesUtil.StringValue("upload_path");
         String path = request.getServletContext().getRealPath(relativePath);
-        String fileName = System.currentTimeMillis()+".jpg";
-        if (FileUtil.download(path,fileName,file))
+        String fileName = System.currentTimeMillis() + ".jpg";
+        if (StreamsUtil.download(path, fileName, file))
             sport_info.setSpImg(relativePath + "/" + fileName);
         return sport_infoDao.insertSelective(sport_info);
     }
 
     @Override
-    public Integer update(HttpServletRequest request,Sport_Info sport_info, String file) {
+    public Integer update(HttpServletRequest request, Sport_Info sport_info, String file) {
         if (file == null)
             return sport_infoDao.updateByPrimaryKeySelective(sport_info);
         String relativePath = PropertiesUtil.StringValue("upload_path");
         String path = request.getServletContext().getRealPath(relativePath);
-        String fileName = System.currentTimeMillis()+".jpg";
-        if (FileUtil.download(path,fileName,file))
+        String fileName = System.currentTimeMillis() + ".jpg";
+        if (StreamsUtil.download(path, fileName, file))
             sport_info.setSpImg(relativePath + "/" + fileName);
         return sport_infoDao.updateByPrimaryKeySelective(sport_info);
     }

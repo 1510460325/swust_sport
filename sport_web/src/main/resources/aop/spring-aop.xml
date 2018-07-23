@@ -14,7 +14,7 @@
 	<!--权限拦截-->
 	<bean id="access" class="cn.wzy.sport.aop.AccessAspect"/>
 	<!--错误日志收集-->
-	<bean id="errorLog" class="cn.wzy.sport.aop.ErrorLog" />
+	<bean id="errorLog" class="org.cn.wzy.aop.ErrorLog" />
 
 	<aop:config>
 		<aop:pointcut id="controllerPoint" expression="execution(* cn.wzy.sport.controller.*.*(..))"/>
