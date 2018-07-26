@@ -1,11 +1,39 @@
 var maxPage = 1;
 var nowPage = 1;
+var ipSearch = false;
 $(document).ready(function () {
     if (checkOnline()) {
         usersQuery(0);
         refreshClick();
+        isOpen();
     }
 });
+
+function isOpen() {
+    $.ajax({
+        url: encodeURI(baseUrl + "/user/isOpen.do?t=" + Math.random()),
+        type: "GET",
+        async: true,//这里表示同步
+        dataType: 'json',
+        headers: {
+            Accept: "application/json; charset=utf-8",
+            Authorization: token
+        },
+        cache: false,
+        success: function (result) {
+            ipSearch = result.data;
+            if (result.data == true) {
+                $("#ipSearch").html("ip监测中");
+            }
+            else {
+                $("#ipSearch").html("ip监测已关闭");
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
 
 function refreshClick() {
     $('#myModal').off("click").on('show.bs.modal', function (event) {

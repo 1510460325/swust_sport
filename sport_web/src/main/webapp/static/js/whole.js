@@ -39,6 +39,29 @@ var user_info = {
 };
 var token;
 
+function openIpSearch() {
+    $.ajax({
+        url: encodeURI(baseUrl + "/user/ipSearch.do?t=" + Math.random()),
+        type: "GET",
+        async: true,//这里表示同步
+        dataType: 'json',
+        headers: {
+            Accept: "application/json; charset=utf-8",
+            Authorization: token
+        },
+        data: {
+            "open":!ipSearch
+        },
+        cache: false,
+        success: function (result) {
+            alert(result.data);
+            isOpen();
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
 function checkOnline() {
     if (localStorage.user == null || localStorage.token == null) {
         toQuite();

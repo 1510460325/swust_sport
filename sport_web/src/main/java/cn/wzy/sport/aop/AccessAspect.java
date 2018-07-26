@@ -6,13 +6,11 @@ import cn.wzy.sport.dao.User_AuthDao;
 import cn.wzy.sport.entity.Operation_Log;
 import cn.wzy.sport.entity.Role_Auth;
 import cn.wzy.sport.entity.User_Auth;
-import lombok.experimental.Accessors;
 import lombok.extern.log4j.Log4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
 import org.cn.wzy.query.BaseQuery;
-import org.cn.wzy.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +29,9 @@ import static cn.wzy.sport.service.constant.RoleConstant.VISITOR;
  */
 @Log4j
 public class AccessAspect {
+
+    public static volatile boolean open = false;
+
     private static final String WEBAPP_CONTEXT = "/api";
 
     @Autowired
@@ -69,8 +70,8 @@ public class AccessAspect {
         record.setOpContent("roleId:" + roleId + "& userId:" + userId + "访问接口" + search_url);
         operation_logDao.insert(record);
         log.info("roleId:" + roleId + " & userId:" + userId + "访问接口" + search_url);
-        log.info("他/她位于：" + queryAdress(request));
-
+        if (open)
+            log.info("他/她位于：" + queryAdress(request));
 
 
         BaseQuery<User_Auth> urlQuery = new BaseQuery<>(User_Auth.class);
@@ -93,7 +94,7 @@ public class AccessAspect {
         String command = "java -classpath /root/AdressQueryUtil AdressQuery " + request.getRemoteAddr();
         BufferedReader br;
         Process p = Runtime.getRuntime().exec(command);
-        br = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
+        br = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
         String line;
         StringBuilder sb = new StringBuilder();
         while ((line = br.readLine()) != null) {

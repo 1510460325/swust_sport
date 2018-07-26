@@ -1,18 +1,19 @@
 package cn.wzy.sport.controller;
 
+import cn.wzy.sport.aop.AccessAspect;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
-import cn.wzy.sport.service.constant.StatusConstant;
 import cn.wzy.sport.service.constant.UserConstant;
 import cn.wzy.sport.service.model.LoginResult;
-import io.jsonwebtoken.Claims;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
 import org.cn.wzy.query.BaseQuery;
 import org.cn.wzy.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,11 +35,12 @@ public class User_InfoController extends BaseController {
 
     /**
      * 注册用户
+     *
      * @param user_info
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/register.do",method = RequestMethod.POST)
+    @RequestMapping(value = "/register.do", method = RequestMethod.POST)
     public ResultModel register(User_Info user_info) {
         return new ResultModel().builder()
                 .data(user_infoService.register(user_info))
@@ -48,19 +50,20 @@ public class User_InfoController extends BaseController {
 
     /**
      * 登录
+     *
      * @param user_info
      * @param verifyCode
      * @param code
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/login.do",method = RequestMethod.GET)
+    @RequestMapping(value = "/login.do", method = RequestMethod.GET)
     public ResultModel login(User_Info user_info, String verifyCode, String code) {
-        LoginResult result = user_infoService.login(user_info,verifyCode,code);
+        LoginResult result = user_infoService.login(user_info, verifyCode, code);
         if (result.getStatus() == UserConstant.SUCCESS) {
-            Map<String,Object> claims = new HashMap<>(2);
-            claims.put("roleId",result.getUsRole());
-            claims.put("userId",result.getId());
+            Map<String, Object> claims = new HashMap<>(2);
+            claims.put("roleId", result.getUsRole());
+            claims.put("userId", result.getId());
             return new ResultModel().builder()
                     .data(result)
                     .code(SUCCESS)
@@ -75,11 +78,12 @@ public class User_InfoController extends BaseController {
 
     /**
      * 用id查询用户
+     *
      * @param userId
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/user.do",method = RequestMethod.GET)
+    @RequestMapping(value = "/user.do", method = RequestMethod.GET)
     public ResultModel user_info(Integer userId) {
         return new ResultModel().builder()
                 .code(SUCCESS)
@@ -89,14 +93,15 @@ public class User_InfoController extends BaseController {
 
     /**
      * 条件查询所有用户
+     *
      * @param user_info
      * @param query
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/users.do",method = RequestMethod.GET)
-    public ResultModel Usersquery (User_Info user_info, BaseQuery<User_Info> query) {
-        List<User_Info> result = user_infoService.queryUsers(user_info,query);
+    @RequestMapping(value = "/users.do", method = RequestMethod.GET)
+    public ResultModel Usersquery(User_Info user_info, BaseQuery<User_Info> query) {
+        List<User_Info> result = user_infoService.queryUsers(user_info, query);
         return new ResultModel().builder()
                 .code(SUCCESS)
                 .data(result)
@@ -106,11 +111,12 @@ public class User_InfoController extends BaseController {
 
     /**
      * 查询所有的个数
+     *
      * @param user_info
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/userCount.do",method = RequestMethod.GET)
+    @RequestMapping(value = "/userCount.do", method = RequestMethod.GET)
     public ResultModel queryCount(User_Info user_info) {
         return new ResultModel().builder()
                 .code(SUCCESS)
@@ -120,11 +126,12 @@ public class User_InfoController extends BaseController {
 
     /**
      * 更新个人信息
+     *
      * @param user_info
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/update.do",method = RequestMethod.PUT)
+    @RequestMapping(value = "/update.do", method = RequestMethod.PUT)
     public ResultModel update(User_Info user_info) {
         checkAccess(user_info);
         return new ResultModel().builder()
@@ -140,5 +147,41 @@ public class User_InfoController extends BaseController {
             user_info.setId(userId);
             user_info.setUsRole(null);
         }
+    }
+
+    /**
+     * 开启ip查询
+     *
+     * @param open
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/ipSearch.do", method = RequestMethod.GET)
+    public ResultModel IpSearch(Boolean open) {
+        if (open != null)
+            AccessAspect.open = open;
+        if (AccessAspect.open)
+            return new ResultModel()
+                    .builder()
+                    .data("开启ip查询")
+                    .build();
+        return new ResultModel()
+                .builder()
+                .data("关闭ip查询")
+                .build();
+    }
+
+    /**
+     * 查询是否开启ipsearch
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/isOpen.do", method = RequestMethod.GET)
+    public ResultModel isOPen() {
+        return new ResultModel()
+                .builder()
+                .data(AccessAspect.open)
+                .build();
     }
 }
