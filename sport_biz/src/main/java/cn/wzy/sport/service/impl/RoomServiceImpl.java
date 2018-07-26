@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +23,21 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private RoomDao roomDao;
 
+    private int getStatus(Room record) {
+        Date now = new Date();
+        if (now.compareTo(record.getRoStartdate()) < 0) {
+            return 1;
+        }
+        if (now.compareTo(record.getRoEnddate()) > 0) {
+            return 3;
+        }
+        return 2;
+    }
+
+    @Override
+    public Integer refreshStatus() {
+        return roomDao.refresh();
+    }
 
     @Override
     public List<Room> queryByCondition(BaseQuery<Room> query) {

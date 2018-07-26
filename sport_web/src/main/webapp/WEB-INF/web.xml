@@ -62,6 +62,9 @@
     <filter-name>CharacterEncoding</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <listener>
+    <listener-class>cn.wzy.sport.listener.TaskManager</listener-class>
+  </listener>
 
   <session-config>
     <session-timeout>30</session-timeout>

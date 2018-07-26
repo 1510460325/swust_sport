@@ -18,5 +18,8 @@ public interface RoomService {
      */
     List<Room> queryByCondition(BaseQuery<Room> query);
 
-
+    /**
+     * 更新所有room的状态
+     */
+    Integer refreshStatus();
 }
