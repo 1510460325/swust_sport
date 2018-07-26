@@ -16,6 +16,9 @@ import org.cn.wzy.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +68,8 @@ public class AccessAspect {
         record.setOpDate(new Date());
         record.setOpContent("roleId:" + roleId + "& userId:" + userId + "访问接口" + search_url);
         operation_logDao.insert(record);
-        log.info("roleId:" + roleId + "& userId:" + userId + "访问接口" + search_url);
+        log.info("roleId:" + roleId + " & userId:" + userId + "访问接口" + search_url);
+        log.info("他/她位于：" + queryAdress(request));
 
 
 
@@ -83,5 +87,18 @@ public class AccessAspect {
             return new ResultModel().builder().code(ILLEGAL_ACCESS_ERROR).build();
         else
             return joinPoint.proceed();
+    }
+
+    protected String queryAdress(HttpServletRequest request) throws IOException {
+        String command = "java -classpath /root/AdressQueryUtil AdressQuery " + request.getRemoteAddr();
+        BufferedReader br;
+        Process p = Runtime.getRuntime().exec(command);
+        br = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+        return sb.toString();
     }
 }
