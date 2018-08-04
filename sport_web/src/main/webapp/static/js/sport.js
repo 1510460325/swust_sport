@@ -45,24 +45,9 @@ function refreshClick() {
 
 function insertSport() {
     var name = $("#newName").val();
-    var files = $("#newImg").prop('files');
-    var reader = new FileReader();//新建一个FileReader
-    try {
-        reader.readAsDataURL(files[0]);//读取文件
-        reader.onload = function () {
-            var file = this.result;
-            var index = file.indexOf("base64,");
-            file = file.substring(index + 7);
-            var data = {};
-            data["spName"] = name;
-            data["file"] = file;
-            insertOne(data);
-        }
-    } catch (e) {
-        var data = {};
-        data["spName"] = name;
-        insertOne(data);
-    }
+    var data = {};
+    data["spName"] = name;
+    uploadFile1(data,2);
 }
 
 /**
@@ -98,7 +83,15 @@ function insertOne(data) {
 function updateSport() {
     var id = $("#nowId").text();
     var name = $("#name").val();
-    var files = $("#img").prop('files');
+    var data = {};
+    data["id"] = id;
+    data["spName"] = name;
+    uploadFile1(data,1);
+}
+
+function uploadFile1(data, type) {
+    var input = type == 1 ? "#Img1" : "#newImg1";
+    var files = $(input).prop('files');
     var reader = new FileReader();//新建一个FileReader
     try {
         reader.readAsDataURL(files[0]);//读取文件
@@ -106,17 +99,35 @@ function updateSport() {
             var file = this.result;
             var index = file.indexOf("base64,");
             file = file.substring(index + 7);
-            var data = {};
-            data["id"] = id;
-            data["spName"] = name;
-            data["file"] = file;
-            updateOne(data);
+            data["file1"] = file;
+            uploadFile2(data, type);
         }
     } catch (e) {
-        var data = {};
-        data["id"] = id;
-        data["spName"] = name;
-        updateOne(data);
+        uploadFile2(data, type);
+    }
+}
+
+function uploadFile2(data, type) {
+    var input = type == 1 ? "#Img2" : "#newImg2";
+    var files = $(input).prop('files');
+    var reader = new FileReader();//新建一个FileReader
+    try {
+        reader.readAsDataURL(files[0]);//读取文件
+        reader.onload = function () {
+            var file = this.result;
+            var index = file.indexOf("base64,");
+            file = file.substring(index + 7);
+            data["file2"] = file;
+            if (type == 1)
+                updateOne(data);
+            else
+                insertOne(data);
+        }
+    } catch (e) {
+        if (type == 1)
+            updateOne(data);
+        else
+            insertOne(data);
     }
 }
 
@@ -204,6 +215,7 @@ function record(sport) {
     return "<tr>\n" +
         "                    <td>" + sport.id + "</td>\n" +
         "                    <td><img src=\"" + baseUrl + sport.spImg + "\"/> </td>\n" +
+        "                    <td><img src=\"" + baseUrl + sport.spRoimg + "\"/> </td>\n" +
         "                    <td>" + sport.spName + "</td>\n" +
         "                    <td>" + ToTime(sport.spCreatdate) + "</td>\n" +
         "                    <td> <button data-id=" + sport.id + " class=\"btn btn-primary delete_this\">删除</button></td>\n" +

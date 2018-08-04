@@ -17,6 +17,8 @@ public class Sport_Info {
 
     private String spImg;
 
+    private String spRoimg;
+
     private Date spCreatdate;
 
 }

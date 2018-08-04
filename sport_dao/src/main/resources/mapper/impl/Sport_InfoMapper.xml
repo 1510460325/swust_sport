@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.wzy.sport.dao.Sport_InfoDao" > 
+<mapper namespace="cn.wzy.sport.dao.Sport_InfoMapper" > 
   <select id="selectByCondition" parameterType="org.cn.wzy.query.BaseQuery" resultMap="BaseResultMap"> 
       SELECT
       <include refid="Base_Column_List"/>
@@ -18,9 +18,9 @@
   <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="false">
       <foreach collection="list" item="item" index="index" separator=";" >
       INSERT into sport_info
-      (sp_name,sp_img,sp_creatdate)
+      (sp_name,sp_roimg,sp_img,sp_creatdate)
       VALUES
-      (#{item.spName,jdbcType=VARCHAR},#{item.spImg,jdbcType=VARCHAR},#{item.spCreatdate,jdbcType=TIMESTAMP})
+      (#{item.spName,jdbcType=VARCHAR},#{item.spRoimg,jdbcType=VARCHAR},#{item.spImg,jdbcType=VARCHAR},#{item.spCreatdate,jdbcType=TIMESTAMP})
       </foreach>
   </insert>
   <delete id="deleteByIdsList" parameterType="java.util.List">

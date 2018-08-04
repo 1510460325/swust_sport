@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public class Sport_InfoDaoImpl extends BaseDaoImpl<Sport_Info> implements Sport_InfoDao {
     @Override
     public String getNameSpace() {
-        return "cn.wzy.sport.dao.Sport_InfoDao";
+        return "cn.wzy.sport.dao.Sport_InfoMapper";
     }
 }
 

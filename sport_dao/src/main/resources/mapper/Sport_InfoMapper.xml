@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.wzy.sport.dao.Sport_InfoDao" >
+<mapper namespace="cn.wzy.sport.dao.Sport_InfoMapper" >
   <resultMap id="BaseResultMap" type="cn.wzy.sport.entity.Sport_Info" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="sp_name" property="spName" jdbcType="VARCHAR" />
+    <result column="sp_roimg" property="spRoimg" jdbcType="VARCHAR" />
     <result column="sp_img" property="spImg" jdbcType="VARCHAR" />
     <result column="sp_creatdate" property="spCreatdate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, sp_name, sp_img, sp_creatdate
+    id, sp_name, sp_roimg, sp_img, sp_creatdate
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from sport_info
     where id = #{id,jdbcType=INTEGER}
@@ -21,10 +22,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.wzy.sport.entity.Sport_Info" >
-    insert into sport_info (id, sp_name, sp_img, 
-      sp_creatdate)
-    values (#{id,jdbcType=INTEGER}, #{spName,jdbcType=VARCHAR}, #{spImg,jdbcType=VARCHAR}, 
-      #{spCreatdate,jdbcType=TIMESTAMP})
+    insert into sport_info (id, sp_name, sp_roimg,
+      sp_img, sp_creatdate)
+    values (#{id,jdbcType=INTEGER}, #{spName,jdbcType=VARCHAR}, #{spRoimg,jdbcType=VARCHAR},
+      #{spImg,jdbcType=VARCHAR}, #{spCreatdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.wzy.sport.entity.Sport_Info" >
     insert into sport_info
@@ -34,6 +35,9 @@
       </if>
       <if test="spName != null" >
         sp_name,
+      </if>
+      <if test="spRoimg != null" >
+        sp_roimg,
       </if>
       <if test="spImg != null" >
         sp_img,
@@ -49,6 +53,9 @@
       <if test="spName != null" >
         #{spName,jdbcType=VARCHAR},
       </if>
+      <if test="spRoimg != null" >
+        #{spRoimg,jdbcType=VARCHAR},
+      </if>
       <if test="spImg != null" >
         #{spImg,jdbcType=VARCHAR},
       </if>
@@ -63,6 +70,9 @@
       <if test="spName != null" >
         sp_name = #{spName,jdbcType=VARCHAR},
       </if>
+      <if test="spRoimg != null" >
+        sp_roimg = #{spRoimg,jdbcType=VARCHAR},
+      </if>
       <if test="spImg != null" >
         sp_img = #{spImg,jdbcType=VARCHAR},
       </if>
@@ -75,6 +85,7 @@
   <update id="updateByPrimaryKey" parameterType="cn.wzy.sport.entity.Sport_Info" >
     update sport_info
     set sp_name = #{spName,jdbcType=VARCHAR},
+      sp_roimg = #{spRoimg,jdbcType=VARCHAR},
       sp_img = #{spImg,jdbcType=VARCHAR},
       sp_creatdate = #{spCreatdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

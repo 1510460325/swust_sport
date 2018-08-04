@@ -30,29 +30,37 @@ public class Sport_InfoServiceImpl implements Sport_InfoService {
     }
 
     @Override
-    public Integer insert(HttpServletRequest request, Sport_Info sport_info, String file) {
+    public Integer insert(HttpServletRequest request, Sport_Info sport_info, String file1, String file2) {
         sport_info.setSpCreatdate(new Date());
-        if (file == null) {
-            sport_info.setSpImg("/static/img/logo.png");
-            return sport_infoDao.insertSelective(sport_info);
-        }
         String relativePath = PropertiesUtil.StringValue("upload_path");
         String path = request.getServletContext().getRealPath(relativePath);
-        String fileName = System.currentTimeMillis() + ".jpg";
-        if (StreamsUtil.download(path, fileName, file))
-            sport_info.setSpImg(relativePath + "/" + fileName);
+        if (file1 != null) {
+            String fileName = System.currentTimeMillis() + "sport.jpg";
+            if (StreamsUtil.download(path, fileName, file1))
+                sport_info.setSpImg(relativePath + "/" + fileName);
+        }
+        if (file2 != null) {
+            String fileName = System.currentTimeMillis() + "room.jpg";
+            if (StreamsUtil.download(path, fileName, file2))
+                sport_info.setSpRoimg(relativePath + "/" + fileName);
+        }
         return sport_infoDao.insertSelective(sport_info);
     }
 
     @Override
-    public Integer update(HttpServletRequest request, Sport_Info sport_info, String file) {
-        if (file == null)
-            return sport_infoDao.updateByPrimaryKeySelective(sport_info);
+    public Integer update(HttpServletRequest request, Sport_Info sport_info, String file1, String file2) {
         String relativePath = PropertiesUtil.StringValue("upload_path");
         String path = request.getServletContext().getRealPath(relativePath);
-        String fileName = System.currentTimeMillis() + ".jpg";
-        if (StreamsUtil.download(path, fileName, file))
-            sport_info.setSpImg(relativePath + "/" + fileName);
+        if (file1 != null) {
+            String fileName = System.currentTimeMillis() + "sport.jpg";
+            if (StreamsUtil.download(path, fileName, file1))
+                sport_info.setSpImg(relativePath + "/" + fileName);
+        }
+        if (file2 != null) {
+            String fileName = System.currentTimeMillis() + "room.jpg";
+            if (StreamsUtil.download(path, fileName, file2))
+                sport_info.setSpRoimg(relativePath + "/" + fileName);
+        }
         return sport_infoDao.updateByPrimaryKeySelective(sport_info);
     }
 

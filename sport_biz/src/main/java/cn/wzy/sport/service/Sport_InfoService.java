@@ -22,10 +22,10 @@ public interface Sport_InfoService {
      * 更新运动模块
      * @param request
      * @param sport_info
-     * @param file
+     * @param file1
      * @return
      */
-    Integer update(HttpServletRequest request, Sport_Info sport_info, String file);
+    Integer update(HttpServletRequest request, Sport_Info sport_info, String file1, String file2);
 
     /**
      * 删除sport
@@ -34,5 +34,13 @@ public interface Sport_InfoService {
      */
     Integer deleteSport(Integer id);
 
-    Integer insert(HttpServletRequest request, Sport_Info sport_info, String file);
+    /**
+     * 新添运动模块
+     * @param request
+     * @param sport_info
+     * @param file1
+     * @param file2
+     * @return
+     */
+    Integer insert(HttpServletRequest request, Sport_Info sport_info, String file1, String file2);
 }

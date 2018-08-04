@@ -46,15 +46,16 @@ public class Sport_InfoController extends BaseController {
     /**
      * 更新模块信息
      * @param sport_info
-     * @param file
+     * @param file1
+     * @param file2
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/update.do",method = RequestMethod.PUT)
-    public ResultModel update(Sport_Info sport_info,String file) {
+    public ResultModel update(Sport_Info sport_info,String file1, String file2) {
         return new ResultModel().builder()
                 .code(SUCCESS)
-                .data(sport_infoService.update(getRequest(),sport_info,file))
+                .data(sport_infoService.update(getRequest(),sport_info,file1,file2))
                 .build();
     }
 
@@ -75,15 +76,16 @@ public class Sport_InfoController extends BaseController {
     /**
      * 新添模块
      * @param sport_info
-     * @param file
+     * @param file1
+     * @param file2
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/insert.do",method = RequestMethod.POST)
-    public ResultModel insertOne(Sport_Info sport_info, String file) {
+    public ResultModel insertOne(Sport_Info sport_info, String file1, String file2) {
         return new ResultModel().builder()
                 .code(SUCCESS)
-                .data(sport_infoService.insert(getRequest(),sport_info,file))
+                .data(sport_infoService.insert(getRequest(),sport_info,file1,file2))
                 .build();
     }
 }
