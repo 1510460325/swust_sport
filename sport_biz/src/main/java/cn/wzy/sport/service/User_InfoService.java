@@ -3,7 +3,9 @@ package cn.wzy.sport.service;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.query.BaseQuery;
+import org.omg.PortableInterceptor.Interceptor;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -50,5 +52,19 @@ public interface User_InfoService {
      */
     int queryCountByCondition(User_Info user_info);
 
+    /**
+     * 更新个人信息
+     * @param user_info
+     * @return
+     */
     int update(User_Info user_info);
+
+    /**
+     * 更新个人照片
+     * @param request
+     * @param record
+     * @param avatar
+     * @return
+     */
+    boolean setAvatar(HttpServletRequest request,User_Info record, String avatar);
 }

@@ -140,6 +140,17 @@ public class User_InfoController extends BaseController {
                 .build();
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/setAvatar.do", method = RequestMethod.PUT)
+    public ResultModel setAvatar(User_Info user_info, String avatar) {
+        checkAccess(user_info);
+        return new ResultModel().builder()
+                .code(SUCCESS)
+                .data(user_infoService.setAvatar(getRequest(),user_info,avatar))
+                .build();
+    }
+
     private void checkAccess(User_Info user_info) {
         Integer roleId = (Integer) ValueOfClaims("roleId");
         Integer userId = (Integer) ValueOfClaims("userId");

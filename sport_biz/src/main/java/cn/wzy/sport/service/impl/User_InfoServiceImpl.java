@@ -5,11 +5,14 @@ import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
 import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.query.BaseQuery;
+import org.cn.wzy.util.PropertiesUtil;
+import org.cn.wzy.util.StreamsUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static cn.wzy.sport.service.constant.RoleConstant.ORDINARY;
@@ -103,5 +106,18 @@ public class User_InfoServiceImpl implements User_InfoService {
     @Override
     public int update(User_Info user_info) {
         return this.userInfoDao.updateByPrimaryKeySelective(user_info);
+    }
+
+    @Override
+    public boolean setAvatar(HttpServletRequest request, User_Info record, String avatar) {
+        String relativePath = PropertiesUtil.StringValue("avatar");
+        String path = request.getServletContext().getRealPath(relativePath);
+        if (avatar != null) {
+            String fileName = System.currentTimeMillis() + "user.jpg";
+            if (StreamsUtil.download(path, fileName, avatar))
+                record.setUsImg(relativePath + "/" + fileName);
+        }
+        this.userInfoDao.updateByPrimaryKeySelective(record);
+        return true;
     }
 }
