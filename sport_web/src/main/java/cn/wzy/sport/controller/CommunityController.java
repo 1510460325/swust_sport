@@ -1,8 +1,9 @@
 package cn.wzy.sport.controller;
 
-import cn.wzy.sport.entity.User_Message;
 import cn.wzy.sport.service.User_MessageService;
 import lombok.extern.log4j.Log4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -21,8 +22,13 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Log4j
 public class CommunityController {
 
-    private static final User_MessageService service = null;
 
+    private static final User_MessageService service;
+
+    static {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        service = ((User_MessageService) ctx.getBean("user_MessageServiceImpl"));
+    }
 
     private static final Map<Integer, CopyOnWriteArraySet<CommunityController>> rooms = new ConcurrentHashMap<>();
 
@@ -56,7 +62,7 @@ public class CommunityController {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        service.save(new User_Message(0, userId, message, roomId, new Date()));
+        //service.save(new User_Message(0, userId, message, roomId, new Date()));
         CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
         if (friends != null) {
             for (CommunityController item : friends) {

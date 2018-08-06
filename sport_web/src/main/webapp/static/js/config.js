@@ -1,1 +1,1 @@
-var baseUrl = "http://wangzhengyu.cn/api";
+var baseUrl = "http://localhost/api";
