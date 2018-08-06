@@ -3,6 +3,7 @@ package cn.wzy.sport.service;
 import cn.wzy.sport.entity.User_Message;
 import cn.wzy.sport.service.model.MessageVO;
 import cn.wzy.sport.service.model.User_MessageVO;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.cn.wzy.query.BaseQuery;
 
 import java.util.List;
@@ -28,4 +29,11 @@ public interface User_MessageService {
      * @return
      */
     List<MessageVO> queryByUser(String username, Integer roomId);
+
+    /**
+     * 插入聊天
+     * @param record
+     * @return
+     */
+    Integer save(User_Message record);
 }

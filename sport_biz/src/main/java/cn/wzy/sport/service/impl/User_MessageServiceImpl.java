@@ -92,4 +92,9 @@ public class User_MessageServiceImpl implements User_MessageService {
         }
         return result;
     }
+
+    @Override
+    public Integer save(User_Message record) {
+        return user_messageDao.insert(record);
+    }
 }
