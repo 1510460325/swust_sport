@@ -111,8 +111,8 @@ function contentsRecord(data) {
         status = "解封他";
     return "<tr>\n" +
         "                <td>" + data.usName + "</td>\n" +
-        "                <td>" +data.usMessage + "</td>\n" +
-        "                <td>"+ ToTime(data.usSendtime)+"</td>\n" +
+        "                <td>"+ ToTime(data.usSendtime) +
+        "                <br/>" +data.usMessage + "</td>\n" +
         "                <td>\n" +
         "                    <button data-id=" + data.usUserid + " data-status=" +data.usStatus + " class=\"btn btn-primary change_status\">"+status+"</button>\n" +
         "                </td>\n" +
