@@ -34,7 +34,7 @@ public class RoomController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/rooms",method = RequestMethod.GET)
+    @RequestMapping(value = "/rooms.do",method = RequestMethod.GET)
     public ResultModel query(Room room, BaseQuery<Room> query) {
         query.setQuery(room);
         List<Room> result = roomService.queryByCondition(query);
