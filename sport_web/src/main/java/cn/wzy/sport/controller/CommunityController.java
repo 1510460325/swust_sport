@@ -1,5 +1,6 @@
 package cn.wzy.sport.controller;
 
+import cn.wzy.sport.entity.User_Message;
 import cn.wzy.sport.service.User_MessageService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.ApplicationContext;
@@ -62,7 +63,7 @@ public class CommunityController {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        //service.save(new User_Message(0, userId, message, roomId, new Date()));
+        service.save(new User_Message(0, userId, message, roomId, new Date()));
         CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
         if (friends != null) {
             for (CommunityController item : friends) {
