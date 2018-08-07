@@ -62,8 +62,14 @@ public class CommunityController {
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
-        service.save(new User_Message(0, userId, message, roomId, new Date()));
+    public void onMessage(final String message, Session session) {
+        //新建线程来保存用户聊天信息
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                service.save(new User_Message(0, userId, message, roomId, new Date()));
+            }
+        }).start();
         CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
         if (friends != null) {
             for (CommunityController item : friends) {
@@ -74,7 +80,6 @@ public class CommunityController {
 
     @OnError
     public void onError(Session session, Throwable error) {
-        log.info("发生错误");
         log.info("发生错误" + new Date());
         error.printStackTrace();
     }
