@@ -45,12 +45,14 @@ public class CommunityController {
         String[] param = ro_user.split("-");
         this.roomId = Integer.parseInt(param[0]);
         this.userId = Integer.parseInt(param[1]);
-        CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
-        if (friends == null) {
-            friends = new CopyOnWriteArraySet<>();
-            rooms.put(roomId, friends);
+        synchronized (rooms) {
+            CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
+            if (friends == null) {
+                friends = new CopyOnWriteArraySet<>();
+                rooms.put(roomId,friends);
+            }
+            friends.add(this);
         }
-        friends.add(this);
     }
 
     @OnClose
@@ -70,6 +72,8 @@ public class CommunityController {
                 service.save(new User_Message(0, userId, message, roomId, new Date()));
             }
         }).start();
+
+
         CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
         if (friends != null) {
             for (CommunityController item : friends) {
