@@ -10,8 +10,8 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -31,7 +31,7 @@ public class CommunityController {
         service = ((User_MessageService) ctx.getBean("user_MessageServiceImpl"));
     }
 
-    private static final Map<Integer, CopyOnWriteArraySet<CommunityController>> rooms = new ConcurrentHashMap<>();
+    private static final Map<Integer, CopyOnWriteArraySet<CommunityController>> rooms = new HashMap<>();
 
     private Session session;
 
@@ -45,14 +45,16 @@ public class CommunityController {
         String[] param = ro_user.split("-");
         this.roomId = Integer.parseInt(param[0]);
         this.userId = Integer.parseInt(param[1]);
-        synchronized (rooms) {
-            CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
-            if (friends == null) {
-                friends = new CopyOnWriteArraySet<>();
-                rooms.put(roomId,friends);
+        CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
+        if (friends == null) {
+            synchronized (rooms) {
+                if (!rooms.containsKey(roomId)) {
+                    friends = new CopyOnWriteArraySet<>();
+                    rooms.put(roomId, friends);
+                }
             }
-            friends.add(this);
         }
+        friends.add(this);
     }
 
     @OnClose
