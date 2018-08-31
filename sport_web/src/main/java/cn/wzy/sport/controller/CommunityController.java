@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Create by Wzy
@@ -26,6 +28,7 @@ public class CommunityController {
 
     private static final User_MessageService service;
 
+    private static final Executor executor = Executors.newFixedThreadPool(5);
     static {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         service = ((User_MessageService) ctx.getBean("user_MessageServiceImpl"));
@@ -68,12 +71,12 @@ public class CommunityController {
     @OnMessage
     public void onMessage(final String message, Session session) {
         //新建线程来保存用户聊天信息
-        new Thread(new Runnable() {
+		    executor.execute(new Runnable() {
             @Override
             public void run() {
                 service.save(new User_Message(0, userId, message, roomId, new Date()));
             }
-        }).start();
+        });
 
 
         CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
