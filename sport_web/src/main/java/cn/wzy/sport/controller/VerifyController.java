@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 
 import static org.cn.wzy.model.ResultModel.SUCCESS;
@@ -21,11 +22,13 @@ import static org.cn.wzy.model.ResultModel.SUCCESS;
 @RequestMapping("/verify")
 public class VerifyController extends BaseController {
 
-    @ResponseBody
-    @RequestMapping(value = "/getVerify.do",method = RequestMethod.GET)
-    public ResultModel verify() throws IOException {
-        return new ResultModel().builder()
-                .data(VerifyCodeUtils.VerifyCode(80,30,4))
-                .code(SUCCESS).build();
-    }
+	@ResponseBody
+	@RequestMapping(value = "/getVerify.do", method = RequestMethod.GET)
+	public ResultModel verify() throws IOException {
+		VerifyCodeUtils.ImgResult imgResult = VerifyCodeUtils.VerifyCode(80, 30, 4);
+		getRequest().getSession().setAttribute("verifyCode",imgResult.getCode());
+		return new ResultModel().builder()
+			.data(imgResult.getImg())
+			.code(SUCCESS).build();
+	}
 }

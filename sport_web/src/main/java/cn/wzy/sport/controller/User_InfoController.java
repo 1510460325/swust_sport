@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,169 +31,168 @@ import static org.cn.wzy.model.ResultModel.SUCCESS;
 @RequestMapping("/user")
 public class User_InfoController extends BaseController {
 
-    @Autowired
-    private User_InfoService user_infoService;
+	@Autowired
+	private User_InfoService user_infoService;
 
-    /**
-     * 注册用户
-     *
-     * @param user_info
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/register.do", method = RequestMethod.POST)
-    public ResultModel register(User_Info user_info) {
-        return new ResultModel().builder()
-                .data(user_infoService.register(user_info))
-                .code(SUCCESS)
-                .build();
-    }
+	/**
+	 * 注册用户
+	 *
+	 * @param user_info
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
+	public ResultModel register(User_Info user_info) {
+		return new ResultModel().builder()
+			.data(user_infoService.register(user_info))
+			.code(SUCCESS)
+			.build();
+	}
 
-    /**
-     * 登录
-     *
-     * @param user_info
-     * @param verifyCode
-     * @param code
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/login.do", method = RequestMethod.GET)
-    public ResultModel login(User_Info user_info, String verifyCode, String code) {
-        LoginResult result = user_infoService.login(user_info, verifyCode, code);
-        if (result.getStatus() == UserConstant.SUCCESS) {
-            Map<String, Object> claims = new HashMap<>(2);
-            claims.put("roleId", result.getUsRole());
-            claims.put("userId", result.getId());
-            return new ResultModel().builder()
-                    .data(result)
-                    .code(SUCCESS)
-                    .token(TokenUtil.tokens(claims))
-                    .build();
-        }
-        return new ResultModel().builder()
-                .data(result)
-                .code(SUCCESS)
-                .build();
-    }
+	/**
+	 * 登录
+	 *
+	 * @param user_info
+	 * @param code
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
+	public ResultModel login(User_Info user_info, String code) {
+		LoginResult result = user_infoService.login(user_info, (String) getSessionValue("verifyCode"), code);
+		if (result.getStatus() == UserConstant.SUCCESS) {
+			Map<String, Object> claims = new HashMap<>(2);
+			claims.put("roleId", result.getUsRole());
+			claims.put("userId", result.getId());
+			return new ResultModel().builder()
+				.data(result)
+				.code(SUCCESS)
+				.token(TokenUtil.tokens(claims))
+				.build();
+		}
+		return new ResultModel().builder()
+			.data(result)
+			.code(SUCCESS)
+			.build();
+	}
 
-    /**
-     * 用id查询用户
-     *
-     * @param userId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/user.do", method = RequestMethod.GET)
-    public ResultModel user_info(Integer userId) {
-        return new ResultModel().builder()
-                .code(SUCCESS)
-                .data(user_infoService.queryUser(userId))
-                .build();
-    }
+	/**
+	 * 用id查询用户
+	 *
+	 * @param userId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/user.do", method = RequestMethod.GET)
+	public ResultModel user_info(Integer userId) {
+		return new ResultModel().builder()
+			.code(SUCCESS)
+			.data(user_infoService.queryUser(userId))
+			.build();
+	}
 
-    /**
-     * 条件查询所有用户
-     *
-     * @param user_info
-     * @param query
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/users.do", method = RequestMethod.GET)
-    public ResultModel Usersquery(User_Info user_info, BaseQuery<User_Info> query) {
-        List<User_Info> result = user_infoService.queryUsers(user_info, query);
-        return new ResultModel().builder()
-                .code(SUCCESS)
-                .data(result)
-                .total(result == null ? 0 : result.size())
-                .build();
-    }
+	/**
+	 * 条件查询所有用户
+	 *
+	 * @param user_info
+	 * @param query
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/users.do", method = RequestMethod.GET)
+	public ResultModel Usersquery(User_Info user_info, BaseQuery<User_Info> query) {
+		List<User_Info> result = user_infoService.queryUsers(user_info, query);
+		return new ResultModel().builder()
+			.code(SUCCESS)
+			.data(result)
+			.total(result == null ? 0 : result.size())
+			.build();
+	}
 
-    /**
-     * 查询所有的个数
-     *
-     * @param user_info
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/userCount.do", method = RequestMethod.GET)
-    public ResultModel queryCount(User_Info user_info) {
-        return new ResultModel().builder()
-                .code(SUCCESS)
-                .data(user_infoService.queryCountByCondition(user_info))
-                .build();
-    }
+	/**
+	 * 查询所有的个数
+	 *
+	 * @param user_info
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/userCount.do", method = RequestMethod.GET)
+	public ResultModel queryCount(User_Info user_info) {
+		return new ResultModel().builder()
+			.code(SUCCESS)
+			.data(user_infoService.queryCountByCondition(user_info))
+			.build();
+	}
 
-    /**
-     * 更新个人信息
-     *
-     * @param user_info
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/update.do", method = RequestMethod.PUT)
-    public ResultModel update(User_Info user_info) {
-        checkAccess(user_info);
-        return new ResultModel().builder()
-                .code(SUCCESS)
-                .data(user_infoService.update(user_info))
-                .build();
-    }
+	/**
+	 * 更新个人信息
+	 *
+	 * @param user_info
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/update.do", method = RequestMethod.PUT)
+	public ResultModel update(User_Info user_info) {
+		checkAccess(user_info);
+		return new ResultModel().builder()
+			.code(SUCCESS)
+			.data(user_infoService.update(user_info))
+			.build();
+	}
 
 
-    @ResponseBody
-    @RequestMapping(value = "/setAvatar.do", method = RequestMethod.PUT)
-    public ResultModel setAvatar(User_Info user_info, String avatar) {
-        checkAccess(user_info);
-        return new ResultModel().builder()
-                .code(SUCCESS)
-                .data(user_infoService.setAvatar(getRequest(),user_info,avatar))
-                .build();
-    }
+	@ResponseBody
+	@RequestMapping(value = "/setAvatar.do", method = RequestMethod.PUT)
+	public ResultModel setAvatar(User_Info user_info, String avatar) {
+		checkAccess(user_info);
+		return new ResultModel().builder()
+			.code(SUCCESS)
+			.data(user_infoService.setAvatar(getRequest(), user_info, avatar))
+			.build();
+	}
 
-    private void checkAccess(User_Info user_info) {
-        Integer roleId = (Integer) ValueOfClaims("roleId");
-        Integer userId = (Integer) ValueOfClaims("userId");
-        if (roleId != 1) {
-            user_info.setId(userId);
-            user_info.setUsRole(null);
-        }
-    }
+	private void checkAccess(User_Info user_info) {
+		Integer roleId = (Integer) ValueOfClaims("roleId");
+		Integer userId = (Integer) ValueOfClaims("userId");
+		if (roleId != 1) {
+			user_info.setId(userId);
+			user_info.setUsRole(null);
+		}
+	}
 
-    /**
-     * 开启ip查询
-     *
-     * @param open
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/ipSearch.do", method = RequestMethod.GET)
-    public ResultModel IpSearch(Boolean open) {
-        if (open != null)
-            AccessAspect.open = open;
-        if (AccessAspect.open)
-            return new ResultModel()
-                    .builder()
-                    .data("开启ip查询")
-                    .build();
-        return new ResultModel()
-                .builder()
-                .data("关闭ip查询")
-                .build();
-    }
+	/**
+	 * 开启ip查询
+	 *
+	 * @param open
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipSearch.do", method = RequestMethod.GET)
+	public ResultModel IpSearch(Boolean open) {
+		if (open != null)
+			AccessAspect.open = open;
+		if (AccessAspect.open)
+			return new ResultModel()
+				.builder()
+				.data("开启ip查询")
+				.build();
+		return new ResultModel()
+			.builder()
+			.data("关闭ip查询")
+			.build();
+	}
 
-    /**
-     * 查询是否开启ipsearch
-     *
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/isOpen.do", method = RequestMethod.GET)
-    public ResultModel isOPen() {
-        return new ResultModel()
-                .builder()
-                .data(AccessAspect.open)
-                .build();
-    }
+	/**
+	 * 查询是否开启ipsearch
+	 *
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/isOpen.do", method = RequestMethod.GET)
+	public ResultModel isOPen() {
+		return new ResultModel()
+			.builder()
+			.data(AccessAspect.open)
+			.build();
+	}
 }

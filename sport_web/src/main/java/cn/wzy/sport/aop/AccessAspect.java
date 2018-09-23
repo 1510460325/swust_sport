@@ -32,8 +32,6 @@ public class AccessAspect {
 
     public static volatile boolean open = false;
 
-    private static final String WEBAPP_CONTEXT = "/api";
-
     @Autowired
     private Role_AuthDao role_authDao;
 
@@ -53,7 +51,7 @@ public class AccessAspect {
         roleId = roleId == null ? VISITOR : roleId;
         Integer userId = (Integer) controller.ValueOfClaims("userId");
         userId = userId == null ? -1 : userId;
-        String api = request.getRequestURI().replaceAll(WEBAPP_CONTEXT, "");
+        String api = request.getRequestURI().replaceAll(request.getContextPath(), "");
         // 获取请求方法
         String methodName = request.getMethod();
         if ("OPTIONS".equals(methodName)) {

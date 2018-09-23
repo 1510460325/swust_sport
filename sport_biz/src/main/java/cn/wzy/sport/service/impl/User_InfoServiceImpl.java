@@ -28,96 +28,98 @@ import static cn.wzy.sport.service.constant.UserConstant.*;
 @Service
 public class User_InfoServiceImpl implements User_InfoService {
 
-    @Autowired
-    private User_InfoDao userInfoDao;
+	@Autowired
+	private User_InfoDao userInfoDao;
 
-    @Override
-    public int register(User_Info user_info) {
-        //查找是否已经存在
-        BaseQuery<User_Info> baseQuery = new BaseQuery<>(User_Info.class);
-        baseQuery.getQuery().setUsName(user_info.getUsName());
-        List<User_Info> list = userInfoDao.selectByCondition(baseQuery);
-        //用户不存在
-        if (list == null || list.size() == 0) {
-            user_info.setUsRole(ORDINARY);
-            user_info.setUsRoomid(-1);
-            user_info.setUsStatus(ACTIVE);
-            return userInfoDao.insertSelective(user_info);
-        }
-        //用户存在
-        else {
-            return 0;
-        }
-    }
+	private static BASE64Encoder encoder = new BASE64Encoder();
 
-    @Override
-    public LoginResult login(User_Info user_info, String verifyCode, String code) {
-        if (!verifyCode.equals(new BASE64Encoder().encode(code.getBytes()))
-                && !code.equals("1234")) {
-            return new LoginResult().setStatus(VERIFI_ERROR);
-        }
+	@Override
+	public int register(User_Info user_info) {
+		//查找是否已经存在
+		BaseQuery<User_Info> baseQuery = new BaseQuery<>(User_Info.class);
+		baseQuery.getQuery().setUsName(user_info.getUsName());
+		List<User_Info> list = userInfoDao.selectByCondition(baseQuery);
+		//用户不存在
+		if (list == null || list.size() == 0) {
+			user_info.setUsRole(ORDINARY);
+			user_info.setUsRoomid(-1);
+			user_info.setUsStatus(ACTIVE);
+			return userInfoDao.insertSelective(user_info);
+		}
+		//用户存在
+		else {
+			return 0;
+		}
+	}
 
-        BaseQuery<User_Info> query = new BaseQuery<>(User_Info.class);
-        query.getQuery().setUsName(user_info.getUsName());
-        List<User_Info> users = userInfoDao.selectByCondition(query);
-        if (users == null || users.size() == 0)
-            return new LoginResult().setStatus(NOT_EXIST);
+	@Override
+	public LoginResult login(User_Info user_info, String verifyCode, String code) {
+		if (verifyCode == null || code == null ||
+			!verifyCode.equals(encoder.encode(code.getBytes())) && !code.equals("1234")) {
+			return new LoginResult().setStatus(VERIFI_ERROR);
+		}
 
-        query.getQuery().setUsPassword(user_info.getUsPassword());
-        users = userInfoDao.selectByCondition(query);
-        if (users == null || users.size() == 0)
-            return new LoginResult().setStatus(PWD_WRONG);
+		BaseQuery<User_Info> query = new BaseQuery<>(User_Info.class);
+		query.getQuery().setUsName(user_info.getUsName());
+		List<User_Info> users = userInfoDao.selectByCondition(query);
+		if (users == null || users.size() == 0)
+			return new LoginResult().setStatus(NOT_EXIST);
 
-        User_Info user = users.get(0);
-        if (user.getUsStatus() == LOCK)
-            return new LoginResult().setStatus(USER_LOCK);
-        LoginResult result = new LoginResult();
-        BeanUtils.copyProperties(user,result);
-        result.setStatus(SUCCESS);
-        result.setUsPassword(null);
-        return result;
-    }
+		query.getQuery().setUsPassword(user_info.getUsPassword());
+		users = userInfoDao.selectByCondition(query);
+		if (users == null || users.size() == 0)
+			return new LoginResult().setStatus(PWD_WRONG);
 
-    @Override
-    public User_Info queryUser(Integer userId) {
-        return userInfoDao.selectByPrimaryKey(userId).setUsPassword(null);
-    }
+		User_Info user = users.get(0);
+		if (user.getUsStatus() == LOCK)
+			return new LoginResult().setStatus(USER_LOCK);
+		LoginResult result = new LoginResult();
+		BeanUtils.copyProperties(user, result);
+		result.setStatus(SUCCESS);
+		result.setUsPassword(null);
+		return result;
+	}
 
-    @Override
-    public int queryCountByCondition(User_Info user_info) {
-        BaseQuery<User_Info> query = new BaseQuery<>();
-        query.setQuery(user_info);
-        return userInfoDao.selectCountByCondition(query);
-    }
+	@Override
+	public User_Info queryUser(Integer userId) {
+		return userInfoDao.selectByPrimaryKey(userId).setUsPassword(null);
+	}
 
-    @Override
-    public List<User_Info> queryUsers(User_Info user_info, BaseQuery<User_Info> query) {
-        query.setQuery(user_info);
-        List<User_Info> list = userInfoDao.selectByCondition(query);
-        if (list == null || list.size() == 0) {
-            return null;
-        }
-        for (User_Info user:list) {
-            user.setUsPassword(null);
-        }
-        return list;
-    }
+	@Override
+	public int queryCountByCondition(User_Info user_info) {
+		BaseQuery<User_Info> query = new BaseQuery<>();
+		query.setQuery(user_info);
+		return userInfoDao.selectCountByCondition(query);
+	}
 
-    @Override
-    public int update(User_Info user_info) {
-        return this.userInfoDao.updateByPrimaryKeySelective(user_info);
-    }
+	@Override
+	public List<User_Info> queryUsers(User_Info user_info, BaseQuery<User_Info> query) {
+		query.setQuery(user_info);
+		List<User_Info> list = userInfoDao.selectByCondition(query);
+		if (list == null || list.size() == 0) {
+			return null;
+		}
+		for (User_Info user : list) {
+			user.setUsPassword(null);
+		}
+		return list;
+	}
 
-    @Override
-    public boolean setAvatar(HttpServletRequest request, User_Info record, String avatar) {
-        String relativePath = PropertiesUtil.StringValue("avatar");
-        String path = request.getServletContext().getRealPath(relativePath);
-        if (avatar != null) {
-            String fileName = System.currentTimeMillis() + "user.jpg";
-            if (StreamsUtil.download(path, fileName, avatar))
-                record.setUsImg(relativePath + "/" + fileName);
-        }
-        this.userInfoDao.updateByPrimaryKeySelective(record);
-        return true;
-    }
+	@Override
+	public int update(User_Info user_info) {
+		return this.userInfoDao.updateByPrimaryKeySelective(user_info);
+	}
+
+	@Override
+	public boolean setAvatar(HttpServletRequest request, User_Info record, String avatar) {
+		String relativePath = PropertiesUtil.StringValue("avatar");
+		String path = request.getServletContext().getRealPath(relativePath);
+		if (avatar != null) {
+			String fileName = System.currentTimeMillis() + "user.jpg";
+			if (StreamsUtil.download(path, fileName, avatar))
+				record.setUsImg(relativePath + "/" + fileName);
+		}
+		this.userInfoDao.updateByPrimaryKeySelective(record);
+		return true;
+	}
 }

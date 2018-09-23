@@ -1,5 +1,3 @@
-var verifyCode = 1234;
-
 $(document).ready(function () {
     refreshVerify();
 });
@@ -23,8 +21,10 @@ function login() {
         data: {
             "usName": username,
             "usPassword": encrypt(pass),
-            "verifyCode": verifyCode,
             "code": verify
+        },
+        xhrFields: {
+            withCredentials: true
         },
         cache: false,
         success: function (result) {
@@ -66,9 +66,11 @@ function refreshVerify() {
         async: true,//这里表示同步
         dataType: 'json',
         cache: false,
+        xhrFields: {
+            withCredentials: true
+        },
         success: function (result) {
-            $("#verifyImg").attr("src", "data:image/gif;base64," + result.data.img);
-            verifyCode = result.data.code;
+            $("#verifyImg").attr("src", "data:image/gif;base64," + result.data);
         },
         error: function (result) {
             console.log(result);
