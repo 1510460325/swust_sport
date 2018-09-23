@@ -61,10 +61,9 @@ public interface User_InfoService {
 
     /**
      * 更新个人照片
-     * @param request
      * @param record
      * @param avatar
      * @return
      */
-    boolean setAvatar(HttpServletRequest request,User_Info record, String avatar);
+    boolean setAvatar(User_Info record, String avatar);
 }

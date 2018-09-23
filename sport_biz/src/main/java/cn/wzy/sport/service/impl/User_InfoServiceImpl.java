@@ -111,13 +111,12 @@ public class User_InfoServiceImpl implements User_InfoService {
 	}
 
 	@Override
-	public boolean setAvatar(HttpServletRequest request, User_Info record, String avatar) {
+	public boolean setAvatar(User_Info record, String avatar) {
 		String relativePath = PropertiesUtil.StringValue("avatar");
-		String path = request.getServletContext().getRealPath(relativePath);
 		if (avatar != null) {
 			String fileName = System.currentTimeMillis() + "user.jpg";
-			if (StreamsUtil.download(path, fileName, avatar))
-				record.setUsImg(relativePath + "/" + fileName);
+			if (StreamsUtil.download(relativePath, fileName, avatar))
+				record.setUsImg("/person/" + fileName);
 		}
 		this.userInfoDao.updateByPrimaryKeySelective(record);
 		return true;

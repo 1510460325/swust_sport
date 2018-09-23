@@ -147,7 +147,7 @@ public class User_InfoController extends BaseController {
 		checkAccess(user_info);
 		return new ResultModel().builder()
 			.code(SUCCESS)
-			.data(user_infoService.setAvatar(getRequest(), user_info, avatar))
+			.data(user_infoService.setAvatar(user_info, avatar))
 			.build();
 	}
 

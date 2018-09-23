@@ -214,8 +214,8 @@ function drawModels(data) {
 function record(sport) {
     return "<tr>\n" +
         "                    <td>" + sport.id + "</td>\n" +
-        "                    <td><img src=\"" + baseUrl + sport.spImg + "\" width='400px' height='300px'/> </td>\n" +
-        "                    <td><img src=\"" + baseUrl + sport.spRoimg + "\" width='127px' height='127px'/> </td>\n" +
+        "                    <td><img src=\"" + imgUrl + sport.spImg + "\" width='400px' height='300px'/> </td>\n" +
+        "                    <td><img src=\"" + imgUrl + sport.spRoimg + "\" width='127px' height='127px'/> </td>\n" +
         "                    <td>" + sport.spName + "</td>\n" +
         "                    <td>" + ToTime(sport.spCreatdate) + "</td>\n" +
         "                    <td> <button data-id=" + sport.id + " class=\"btn btn-primary delete_this\">删除</button></td>\n" +

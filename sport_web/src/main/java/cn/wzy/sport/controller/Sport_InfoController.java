@@ -1,7 +1,6 @@
 package cn.wzy.sport.controller;
 
 import cn.wzy.sport.entity.Sport_Info;
-import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.Sport_InfoService;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
@@ -55,7 +54,7 @@ public class Sport_InfoController extends BaseController {
     public ResultModel update(Sport_Info sport_info,String file1, String file2) {
         return new ResultModel().builder()
                 .code(SUCCESS)
-                .data(sport_infoService.update(getRequest(),sport_info,file1,file2))
+                .data(sport_infoService.update(sport_info,file1,file2))
                 .build();
     }
 
@@ -85,7 +84,7 @@ public class Sport_InfoController extends BaseController {
     public ResultModel insertOne(Sport_Info sport_info, String file1, String file2) {
         return new ResultModel().builder()
                 .code(SUCCESS)
-                .data(sport_infoService.insert(getRequest(),sport_info,file1,file2))
+                .data(sport_infoService.insert(sport_info,file1,file2))
                 .build();
     }
 }
