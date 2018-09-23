@@ -4,7 +4,7 @@
   <sql id="condition" >
       WHERE 1 = 1 
       <if test="query.usName != null" >
-          AND us_name = #{query.usName,jdbcType=VARCHAR}
+          AND us_name like concat(#{query.usName,jdbcType=VARCHAR}, '%')
       </if>
       <if test="query.usPassword != null" >
           AND us_password = #{query.usPassword,jdbcType=VARCHAR}
