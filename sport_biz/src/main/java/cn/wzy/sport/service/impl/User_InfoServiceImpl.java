@@ -55,7 +55,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 	@Override
 	public LoginResult login(User_Info user_info, String verifyCode, String code) {
 		if (verifyCode == null || code == null ||
-			!verifyCode.equals(encoder.encode(code.getBytes())) && !code.equals("1234")) {
+			!verifyCode.equals(encoder.encode(code.toLowerCase().getBytes())) && !code.equals("1234")) {
 			return new LoginResult().setStatus(VERIFI_ERROR);
 		}
 
