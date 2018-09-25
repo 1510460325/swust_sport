@@ -26,70 +26,79 @@ import java.util.concurrent.Executors;
 public class CommunityController {
 
 
-    private static final User_MessageService service;
+	private static final User_MessageService service;
 
-    private static final Executor executor = Executors.newFixedThreadPool(5);
-    static {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        service = ((User_MessageService) ctx.getBean("user_MessageServiceImpl"));
-    }
+	private static final Executor executor = Executors.newFixedThreadPool(5);
 
-    private static final Map<Integer, CopyOnWriteArraySet<CommunityController>> rooms = new HashMap<>();
+	static {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		service = ((User_MessageService) ctx.getBean("user_MessageServiceImpl"));
+	}
 
-    private Session session;
+	@Override
+	public int hashCode() {
+		return new String(roomId + "-" + userId).hashCode();
+	}
 
-    private Integer userId;
+	private static final Map<Integer, CopyOnWriteArraySet<CommunityController>> rooms = new HashMap<>();
 
-    private Integer roomId;
+	private Session session;
 
-    @OnOpen
-    public void onOpen(@PathParam(value = "ro_user") String ro_user, Session session) {
-        this.session = session;
-        String[] param = ro_user.split("-");
-        this.roomId = Integer.parseInt(param[0]);
-        this.userId = Integer.parseInt(param[1]);
-        CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
-        if (friends == null) {
-            synchronized (rooms) {
-                if (!rooms.containsKey(roomId)) {
-                    friends = new CopyOnWriteArraySet<>();
-                    rooms.put(roomId, friends);
-                }
-            }
-        }
-        friends.add(this);
-    }
+	private Integer userId;
 
-    @OnClose
-    public void onClose() {
-        CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
-        if (friends != null) {
-            friends.remove(this);
-        }
-    }
+	private Integer roomId;
 
-    @OnMessage
-    public void onMessage(final String message, Session session) {
-        //新建线程来保存用户聊天信息
-		    executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                service.save(new User_Message(0, userId, message, roomId, new Date()));
-            }
-        });
+	@OnOpen
+	public void onOpen(@PathParam(value = "ro_user") String ro_user, Session session) {
+		this.session = session;
+		String[] param = ro_user.split("-");
+		this.roomId = Integer.parseInt(param[0]);
+		this.userId = Integer.parseInt(param[1]);
+		CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
+		if (friends == null) {
+			synchronized (rooms) {
+				if (!rooms.containsKey(roomId)) {
+					friends = new CopyOnWriteArraySet<>();
+					rooms.put(roomId, friends);
+				}
+			}
+		}
+		friends.add(this);
+	}
 
+	@OnClose
+	public void onClose() {
+		CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
+		if (friends != null) {
+			friends.remove(this);
+		}
+	}
 
-        CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
-        if (friends != null) {
-            for (CommunityController item : friends) {
-                item.session.getAsyncRemote().sendText(message);
-            }
-        }
-    }
+	@OnMessage
+	public void onMessage(final String message, Session session) {
+		//新建线程来保存用户聊天信息
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				service.save(new User_Message(0, userId, message, roomId, new Date()));
+			}
+		});
 
-    @OnError
-    public void onError(Session session, Throwable error) {
-        log.info("发生错误" + new Date());
-        error.printStackTrace();
-    }
+		String info = userId + ":" + message;
+		CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
+		if (friends != null) {
+			for (CommunityController item : friends) {
+				if (item == this) {
+					continue;
+				}
+				item.session.getAsyncRemote().sendText(message);
+			}
+		}
+	}
+
+	@OnError
+	public void onError(Session session, Throwable error) {
+		log.info("发生错误" + new Date());
+		error.printStackTrace();
+	}
 }
