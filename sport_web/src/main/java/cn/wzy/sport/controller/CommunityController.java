@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,19 +67,39 @@ public class CommunityController {
 			claims = TokenUtil.parse(token);
 		} catch (ExpiredJwtException e) {
 			session.getAsyncRemote().sendText("ExpiredJwtException");
+			try {
+				session.close();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
 			return;
 		} catch (JwtException e) {
 			session.getAsyncRemote().sendText("JwtException");
+			try {
+				session.close();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
 			return;
 		}
 		this.userId = claims.get("userId", Integer.class);
 		User_Info user_info = userService.queryUser(userId);
 		if (user_info == null) {
 			session.getAsyncRemote().sendText("UserException");
+			try {
+				session.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return;
 		}
 		if (user_info.getUsStatus() == -1) {
 			session.getAsyncRemote().sendText("USER_LOCK");
+			try {
+				session.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return;
 		}
 		user = user_info;
