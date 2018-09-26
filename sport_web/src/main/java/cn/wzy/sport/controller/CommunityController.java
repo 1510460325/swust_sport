@@ -1,10 +1,15 @@
 package cn.wzy.sport.controller;
 
+import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.entity.User_Message;
+import cn.wzy.sport.service.User_InfoService;
 import cn.wzy.sport.service.User_MessageService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.log4j.Log4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.cn.wzy.util.TokenUtil;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -21,23 +26,25 @@ import java.util.concurrent.Executors;
  * on 2018/8/6 13:24
  * 不短不长八字刚好
  */
-@ServerEndpoint("/community/{ro_user}")
+@ServerEndpoint("/community/{roomId}/{token}")
 @Log4j
 public class CommunityController {
 
+	private static User_InfoService userService;
 
-	private static final User_MessageService service;
+	private static User_MessageService service;
 
 	private static final Executor executor = Executors.newFixedThreadPool(5);
 
-	static {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-		service = ((User_MessageService) ctx.getBean("user_MessageServiceImpl"));
+	public static void init(WebApplicationContext ctx) {
+		service = (User_MessageService) ctx.getBean("user_MessageServiceImpl");
+		userService = (User_InfoService) ctx.getBean("user_InfoServiceImpl");
+		log.info("**********CommunityController init.**********");
 	}
 
 	@Override
 	public int hashCode() {
-		return new String(roomId + "-" + userId).hashCode();
+		return (roomId + "-" + userId).hashCode();
 	}
 
 	private static final Map<Integer, CopyOnWriteArraySet<CommunityController>> rooms = new HashMap<>();
@@ -48,12 +55,33 @@ public class CommunityController {
 
 	private Integer roomId;
 
+	private User_Info user;
+
 	@OnOpen
-	public void onOpen(@PathParam(value = "ro_user") String ro_user, Session session) {
+	public void onOpen(@PathParam(value = "roomId") Integer roomId, @PathParam(value = "token") String token, Session session) {
 		this.session = session;
-		String[] param = ro_user.split("-");
-		this.roomId = Integer.parseInt(param[0]);
-		this.userId = Integer.parseInt(param[1]);
+		this.roomId = roomId;
+		Claims claims;
+		try {
+			claims = TokenUtil.parse(token);
+		} catch (ExpiredJwtException e) {
+			session.getAsyncRemote().sendText("ExpiredJwtException");
+			return;
+		} catch (JwtException e) {
+			session.getAsyncRemote().sendText("JwtException");
+			return;
+		}
+		this.userId = claims.get("userId", Integer.class);
+		User_Info user_info = userService.queryUser(userId);
+		if (user_info == null) {
+			session.getAsyncRemote().sendText("UserException");
+			return;
+		}
+		if (user_info.getUsStatus() == -1) {
+			session.getAsyncRemote().sendText("USER_LOCK");
+			return;
+		}
+		user = user_info;
 		CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
 		if (friends == null) {
 			synchronized (rooms) {
@@ -84,14 +112,15 @@ public class CommunityController {
 			}
 		});
 
-		String info = userId + ":" + message;
+		String info = messageConvertion(message);
+		System.out.println(info);
 		CopyOnWriteArraySet<CommunityController> friends = rooms.get(roomId);
 		if (friends != null) {
 			for (CommunityController item : friends) {
 				if (item == this) {
 					continue;
 				}
-				item.session.getAsyncRemote().sendText(message);
+				item.session.getAsyncRemote().sendText(info);
 			}
 		}
 	}
@@ -100,5 +129,10 @@ public class CommunityController {
 	public void onError(Session session, Throwable error) {
 		log.info("发生错误" + new Date());
 		error.printStackTrace();
+	}
+
+	private String messageConvertion(String message) {
+		String split = "!@#$%^$#";
+		return user.getId() + split + user.getUsNickname() + split + user.getUsImg() + split + message;
 	}
 }
