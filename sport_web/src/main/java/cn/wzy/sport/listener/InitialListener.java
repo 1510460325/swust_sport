@@ -36,5 +36,6 @@ public class InitialListener implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		log.info("refresh room-task shutdown.");
 		timer.cancel();
+		CommunityController.shutdown();
 	}
 }

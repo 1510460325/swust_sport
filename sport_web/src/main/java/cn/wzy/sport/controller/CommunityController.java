@@ -18,9 +18,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Create by Wzy
@@ -35,12 +33,24 @@ public class CommunityController {
 
 	private static User_MessageService service;
 
-	private static final Executor executor = Executors.newFixedThreadPool(5);
+	//消息保存队列线程池
+	private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+		3
+		, 10
+		, 2
+		, TimeUnit.SECONDS
+		, new LinkedBlockingQueue<Runnable>(5) //工作队列
+	);
 
 	public static void init(WebApplicationContext ctx) {
 		service = (User_MessageService) ctx.getBean("user_MessageServiceImpl");
 		userService = (User_InfoService) ctx.getBean("user_InfoServiceImpl");
 		log.info("**********CommunityController init.**********");
+	}
+
+	public static void shutdown() {
+		executor.shutdown();
+		log.info("**********CommunityController shutdown.**********");
 	}
 
 	@Override
