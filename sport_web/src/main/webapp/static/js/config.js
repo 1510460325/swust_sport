@@ -1,2 +1,2 @@
-var baseUrl = "http://wangzhengyu.cn/api";
-var imgUrl  = "http://wangzhengyu.cn/avatars";
+var baseUrl = "http://acm.swust.edu.cn/sport/sport";
+var imgUrl  = "http://acm.swust.edu.cn/sport/avatars";
