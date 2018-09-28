@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
+import org.cn.wzy.util.PropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +70,7 @@ public class AccessAspect {
 	}
 
 	protected String queryAdress(HttpServletRequest request) throws IOException {
-		String command = "java -classpath /root/AdressQueryUtil AdressQuery " + request.getRemoteAddr();
+		String command = "java -classpath "+ PropertiesUtil.StringValue("IpListener") + " " + request.getRemoteAddr();
 		BufferedReader br;
 		Process p = Runtime.getRuntime().exec(command);
 		br = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
