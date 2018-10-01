@@ -49,7 +49,7 @@ public class AccessAspect {
 		if ("OPTIONS".equals(methodName)) {
 			return joinPoint.proceed();
 		}
-		String search_url = methodName + ":" + api;
+		String search_url = (methodName + ":" + api).replace("//","/");
 
 		//日志记录
 		Operation_Log record = new Operation_Log();
@@ -73,7 +73,7 @@ public class AccessAspect {
 		String command = "java -classpath "+ PropertiesUtil.StringValue("IpListener") + " " + request.getRemoteAddr();
 		BufferedReader br;
 		Process p = Runtime.getRuntime().exec(command);
-		br = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
+		br = new BufferedReader(new InputStreamReader(p.getInputStream(), "gbk"));
 		String line;
 		StringBuilder sb = new StringBuilder();
 		while ((line = br.readLine()) != null) {
