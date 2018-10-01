@@ -64,9 +64,12 @@ public class Sport_InfoServiceImpl implements Sport_InfoService {
 	}
 
 	@Override
-	public List<Sport_Info> querySports(Sport_Info sport_info) {
-		BaseQuery<Sport_Info> query = new BaseQuery<>();
-		query.setQuery(sport_info);
+	public List<Sport_Info> querySports(BaseQuery<Sport_Info> query) {
 		return sport_infoDao.selectByCondition(query);
+	}
+
+	@Override
+	public int total(BaseQuery<Sport_Info> query) {
+		return sport_infoDao.selectCountByCondition(query);
 	}
 }

@@ -48,4 +48,13 @@
         set ro_status = 3
         where <![CDATA[ ro_enddate < #{now,jdbcType=TIMESTAMP} ]]>;
     </update>
+
+    <update id="changeNum" parameterType="java.util.Map">
+        update room
+        set ro_num = ro_num + 1
+        where id = #{newId,jdbcType=INTEGER};
+        update room
+        set ro_num = ro_num - 1
+        where id = #{oldId,jdbcType=INTEGER};
+    </update>
 </mapper>

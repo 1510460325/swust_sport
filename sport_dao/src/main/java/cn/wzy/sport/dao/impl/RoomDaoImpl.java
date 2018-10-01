@@ -6,7 +6,8 @@ import org.cn.wzy.dao.impl.BaseDaoImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Create by Wzy
@@ -15,13 +16,21 @@ import java.util.List;
  */
 @Repository
 public class RoomDaoImpl extends BaseDaoImpl<Room> implements RoomDao {
-    @Override
-    public String getNameSpace() {
-        return "cn.wzy.sport.dao.RoomDao";
-    }
+	@Override
+	public String getNameSpace() {
+		return "cn.wzy.sport.dao.RoomDao";
+	}
 
-    @Override
-    public Integer refresh() {
-        return this.getSqlSession().update(getNameSpace() + ".refresh",new Date());
-    }
+	@Override
+	public boolean changeNum(Integer oldId, Integer newId) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("oldId", oldId);
+		param.put("newId", newId);
+		return this.getSqlSession().update(getNameSpace() + ".changeNum", param) == 1;
+	}
+
+	@Override
+	public Integer refresh() {
+		return this.getSqlSession().update(getNameSpace() + ".refresh", new Date());
+	}
 }

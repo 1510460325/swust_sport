@@ -44,6 +44,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 			user_info.setUsRole(ORDINARY);
 			user_info.setUsRoomid(-1);
 			user_info.setUsStatus(ACTIVE);
+			user_info.setUsImg(PropertiesUtil.StringValue("defaultImg"));
 			return userInfoDao.insertSelective(user_info);
 		}
 		//用户存在
@@ -115,14 +116,15 @@ public class User_InfoServiceImpl implements User_InfoService {
 	}
 
 	@Override
-	public boolean setAvatar(User_Info record, String avatar) {
+	public boolean setAvatar(Integer userId, String avatar) {
 		String relativePath = PropertiesUtil.StringValue("avatar");
+		User_Info record = new User_Info();
+		record.setId(userId);
 		if (avatar != null) {
 			String fileName = System.currentTimeMillis() + "user.jpg";
 			if (StreamsUtil.download(relativePath, fileName, avatar))
 				record.setUsImg("/person/" + fileName);
 		}
-		this.userInfoDao.updateByPrimaryKeySelective(record);
-		return true;
+		return this.userInfoDao.updateByPrimaryKeySelective(record) == 1;
 	}
 }

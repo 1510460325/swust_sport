@@ -1,12 +1,14 @@
 package cn.wzy.sport.controller;
 
 import cn.wzy.sport.entity.Room;
+import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.RoomService;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
 import org.cn.wzy.query.BaseQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,24 +26,56 @@ import static org.cn.wzy.model.ResultModel.SUCCESS;
 @RequestMapping("/room")
 public class RoomController extends BaseController {
 
-    @Autowired
-    private RoomService roomService;
+	@Autowired
+	private RoomService roomService;
 
-    /**
-     * 查询所有的房间
-     * @param room
-     * @param query
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/rooms.do",method = RequestMethod.GET)
-    public ResultModel query(Room room, BaseQuery<Room> query) {
-        query.setQuery(room);
-        List<Room> result = roomService.queryByCondition(query);
-        return new ResultModel()
-                .builder().total(result == null ? 0 : result.size())
-                .data(result)
-                .code(SUCCESS)
-                .build();
-    }
+	/**
+	 * query rooms by condition.
+	 *
+	 * @param room record
+	 * @param query page
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/rooms.do", method = RequestMethod.GET)
+	public ResultModel query(Room room, BaseQuery<Room> query) {
+		List<Room> result = roomService.queryByCondition(query.setQuery(room));
+		return new ResultModel().builder()
+			.total(result == null ? 0 : result.size())
+			.data(result)
+			.code(SUCCESS)
+			.build();
+	}
+
+	/**
+	 * query total by condition.
+	 *
+	 * @param room record
+	 * @param query page
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/total.do", method = RequestMethod.GET)
+	public ResultModel total(Room room, BaseQuery<Room> query) {
+		return new ResultModel().builder()
+			.data(roomService.total(query.setQuery(room)))
+			.code(SUCCESS)
+			.build();
+	}
+
+	/**
+	 * changeNum a sport's room.
+	 *
+	 * @param record userId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/enter.do", method = RequestMethod.PUT)
+	public ResultModel enterRoom(@RequestBody User_Info record) {
+		return new ResultModel().builder()
+			.data(roomService.enterNewRoom(record.getId(), record.getUsRoomid()))
+			.code(SUCCESS)
+			.build();
+	}
+
 }

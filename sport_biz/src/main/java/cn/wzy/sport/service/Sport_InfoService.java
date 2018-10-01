@@ -1,6 +1,7 @@
 package cn.wzy.sport.service;
 
 import cn.wzy.sport.entity.Sport_Info;
+import org.cn.wzy.query.BaseQuery;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -14,11 +15,18 @@ public interface Sport_InfoService {
 	/**
 	 * 查询运动模块
 	 *
-	 * @param sport_info
+	 * @param query
 	 * @return
 	 */
-	List<Sport_Info> querySports(Sport_Info sport_info);
+	List<Sport_Info> querySports(BaseQuery<Sport_Info> query);
 
+
+	/**
+	 * query total by condition
+	 * @param query
+	 * @return
+	 */
+	int total(BaseQuery<Sport_Info> query);
 	/**
 	 * 更新运动模块
 	 *

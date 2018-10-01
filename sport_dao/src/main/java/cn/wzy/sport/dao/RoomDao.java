@@ -8,4 +8,6 @@ import java.util.List;
 public interface RoomDao extends BaseDao<Room> {
 
     Integer refresh();
+
+    boolean changeNum(Integer oldId, Integer newId);
 }

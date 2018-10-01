@@ -22,8 +22,6 @@ public class RefreshSports extends TimerTask {
 
     @Override
     public void run() {
-        int result = roomService.refreshStatus();
-        if (result == 0)
-            log.info("refresh failed....");
+        roomService.refreshStatus();
     }
 }

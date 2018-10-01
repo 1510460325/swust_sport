@@ -39,4 +39,13 @@
           #{item}
       </foreach>
   </select>
+
+    <select id="updateAndReturnOld" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select us_roomid
+        from user_info
+        where id = #{userId,jdbcType=INTEGER} for update;
+        update user_info
+        set us_roomid = #{newId,jdbcType=INTEGER}
+        where id = #{userId,jdbcType=INTEGER}
+    </select>
 </mapper>

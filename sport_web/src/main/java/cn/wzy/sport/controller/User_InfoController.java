@@ -1,5 +1,6 @@
 package cn.wzy.sport.controller;
 
+import cn.wzy.sport.VO.AvatarVo;
 import cn.wzy.sport.aop.AccessAspect;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
@@ -11,6 +12,7 @@ import org.cn.wzy.query.BaseQuery;
 import org.cn.wzy.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,7 +44,7 @@ public class User_InfoController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
-	public ResultModel register(User_Info user_info) {
+	public ResultModel register(@RequestBody User_Info user_info) {
 		return new ResultModel().builder()
 			.data(user_infoService.register(user_info))
 			.code(SUCCESS)
@@ -132,7 +134,7 @@ public class User_InfoController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update.do", method = RequestMethod.PUT)
-	public ResultModel update(User_Info user_info) {
+	public ResultModel update(@RequestBody User_Info user_info) {
 		checkAccess(user_info);
 		return new ResultModel().builder()
 			.code(SUCCESS)
@@ -143,11 +145,10 @@ public class User_InfoController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/setAvatar.do", method = RequestMethod.PUT)
-	public ResultModel setAvatar(User_Info user_info, String avatar) {
-		checkAccess(user_info);
+	public ResultModel setAvatar(@RequestBody AvatarVo  record) {
 		return new ResultModel().builder()
 			.code(SUCCESS)
-			.data(user_infoService.setAvatar(user_info, avatar))
+			.data(user_infoService.setAvatar(record.getUserId(), record.getAvatar()))
 			.build();
 	}
 
@@ -172,12 +173,10 @@ public class User_InfoController extends BaseController {
 		if (open != null)
 			AccessAspect.open = open;
 		if (AccessAspect.open)
-			return new ResultModel()
-				.builder()
+			return new ResultModel().builder()
 				.data("开启ip查询")
 				.build();
-		return new ResultModel()
-			.builder()
+		return new ResultModel().builder()
 			.data("关闭ip查询")
 			.build();
 	}
@@ -190,8 +189,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/isOpen.do", method = RequestMethod.GET)
 	public ResultModel isOPen() {
-		return new ResultModel()
-			.builder()
+		return new ResultModel().builder()
 			.data(AccessAspect.open)
 			.build();
 	}
