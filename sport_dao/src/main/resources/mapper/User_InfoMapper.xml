@@ -18,7 +18,7 @@
     <result column="us_role" property="usRole" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, us_name, us_password, us_img, us_sex, us_age, us_nickname, us_sign, us_class, 
+    id, us_name, us_img, us_sex, us_age, us_nickname, us_sign, us_class,
     us_major, us_institution, us_roomid, us_status, us_role
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

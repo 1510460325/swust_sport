@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static cn.wzy.sport.service.constant.RoleConstant.ORDINARY;
@@ -77,6 +76,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 			return new LoginResult().setStatus(PWD_WRONG);
 
 		User_Info user = users.get(0);
+		redisDao.putUser(user);
 		if (user.getUsStatus() == LOCK)
 			return new LoginResult().setStatus(USER_LOCK);
 		LoginResult result = new LoginResult();
@@ -91,9 +91,11 @@ public class User_InfoServiceImpl implements User_InfoService {
 		User_Info redis_data = redisDao.getUser(userId);
 		if (redis_data == null) {
 			User_Info result = userInfoDao.selectByPrimaryKey(userId);
-			redisDao.putUser(result);
+			if (result != null) {
+				redisDao.putUser(result);
+			}
 			return result;
-		} else  {
+		} else {
 			return redis_data;
 		}
 	}
@@ -111,9 +113,6 @@ public class User_InfoServiceImpl implements User_InfoService {
 		List<User_Info> list = userInfoDao.selectByCondition(query);
 		if (list == null || list.size() == 0) {
 			return null;
-		}
-		for (User_Info user : list) {
-			user.setUsPassword(null);
 		}
 		return list;
 	}
