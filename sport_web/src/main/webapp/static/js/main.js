@@ -51,8 +51,8 @@ function refreshClick() {
         var status = btnThis.data('status');
         var data = {
             "id": userId,
-            "usStatus": status * -1,
-        }
+            "usStatus": status * -1
+        };
         $.ajax({
             url: encodeURI(baseUrl + "/user/update.do?t=" + Math.random()),
             type: "PUT",
@@ -62,7 +62,8 @@ function refreshClick() {
                 Accept: "application/json; charset=utf-8",
                 Authorization: token
             },
-            data: data,
+            contentType : "application/json",
+            data: JSON.stringify(data),
             cache: false,
             success: function (result) {
                 if (result.data = 1) {
@@ -104,7 +105,8 @@ function changeUser() {
             Accept: "application/json; charset=utf-8",
             Authorization: token
         },
-        data: data,
+        contentType : "application/json",
+        data: JSON.stringify(data),
         cache: false,
         success: function (result) {
             if (result.data = 1) {

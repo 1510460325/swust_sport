@@ -84,7 +84,7 @@ public class RoomServiceImpl implements RoomService {
 		BeanUtils.copyProperties(room, record);
 		record.setRoStartdate(new Date(room.getRoStart()))
 			.setRoEnddate(new Date(room.getRoEnd()))
-			.setRoNum(0)
+			.setRoNum(1)
 			.setRoStatus(READY);
 		roomDao.insertSelective(record);
 		//update the user status

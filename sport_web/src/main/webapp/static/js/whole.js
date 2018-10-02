@@ -42,7 +42,7 @@ var token;
 function openIpSearch() {
     $.ajax({
         url: encodeURI(baseUrl + "/user/ipSearch.do?t=" + Math.random()),
-        type: "GET",
+        type: "PUT",
         async: true,//这里表示同步
         dataType: 'json',
         headers: {

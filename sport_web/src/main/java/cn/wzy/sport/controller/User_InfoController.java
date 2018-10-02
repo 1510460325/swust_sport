@@ -158,6 +158,7 @@ public class User_InfoController extends BaseController {
 		if (roleId != ADMIN) {
 			user_info.setId(userId);
 			user_info.setUsRole(null);
+			user_info.setUsStatus(null);
 		}
 	}
 
@@ -168,7 +169,7 @@ public class User_InfoController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/ipSearch.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/ipSearch.do", method = RequestMethod.PUT)
 	public ResultModel IpSearch(Boolean open) {
 		if (open != null)
 			AccessAspect.open = open;

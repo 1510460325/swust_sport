@@ -42,7 +42,8 @@ function refreshClick() {
                 Accept: "application/json; charset=utf-8",
                 Authorization: token
             },
-            data: data,
+            contentType : "application/json",
+            data: JSON.stringify(data),
             cache: false,
             success: function (result) {
                 if (result.data = 1) {
