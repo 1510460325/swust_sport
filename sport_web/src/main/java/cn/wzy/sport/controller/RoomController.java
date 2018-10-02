@@ -1,5 +1,6 @@
 package cn.wzy.sport.controller;
 
+import cn.wzy.sport.service.VO.RoomVO;
 import cn.wzy.sport.entity.Room;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.RoomService;
@@ -74,6 +75,21 @@ public class RoomController extends BaseController {
 	public ResultModel enterRoom(@RequestBody User_Info record) {
 		return new ResultModel().builder()
 			.data(roomService.enterNewRoom(record.getId(), record.getUsRoomid()))
+			.code(SUCCESS)
+			.build();
+	}
+
+	/**
+	 * create a new sport's room.
+	 *
+	 * @param record record
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/create.do", method = RequestMethod.POST)
+	public ResultModel create(@RequestBody RoomVO record) {
+		return new ResultModel().builder()
+			.data(roomService.create(record))
 			.code(SUCCESS)
 			.build();
 	}

@@ -1,6 +1,6 @@
 package cn.wzy.sport.controller;
 
-import cn.wzy.sport.VO.AvatarVo;
+import cn.wzy.sport.service.VO.AvatarVo;
 import cn.wzy.sport.aop.AccessAspect;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static cn.wzy.sport.service.constant.RoleConstant.ADMIN;
 import static org.cn.wzy.model.ResultModel.SUCCESS;
 
 /**
@@ -89,7 +89,7 @@ public class User_InfoController extends BaseController {
 	public ResultModel user_info(Integer userId) {
 		return new ResultModel().builder()
 			.code(SUCCESS)
-			.data(user_infoService.queryUser(userId))
+			.data(user_infoService.queryUserStatus(userId))
 			.build();
 	}
 
@@ -155,7 +155,7 @@ public class User_InfoController extends BaseController {
 	private void checkAccess(User_Info user_info) {
 		Integer roleId = (Integer) ValueOfClaims("roleId");
 		Integer userId = (Integer) ValueOfClaims("userId");
-		if (roleId != 1) {
+		if (roleId != ADMIN) {
 			user_info.setId(userId);
 			user_info.setUsRole(null);
 		}

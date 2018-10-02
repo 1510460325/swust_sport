@@ -93,7 +93,7 @@ public class CommunityController {
 			return;
 		}
 		this.userId = claims.get("userId", Integer.class);
-		User_Info user_info = userService.queryUser(userId);
+		User_Info user_info = userService.queryUserStatus(userId);
 		if (user_info == null) {
 			session.getAsyncRemote().sendText("UserException");
 			try {

@@ -1,5 +1,6 @@
 package cn.wzy.sport.service;
 
+import cn.wzy.sport.entity.Room;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.query.BaseQuery;
@@ -36,7 +37,7 @@ public interface User_InfoService {
 	 * @param userId
 	 * @return
 	 */
-	User_Info queryUser(Integer userId);
+	User_Info queryUserStatus(Integer userId);
 
 	/**
 	 * 条件查询所有用户

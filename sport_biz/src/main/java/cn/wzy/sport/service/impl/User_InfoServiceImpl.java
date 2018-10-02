@@ -1,7 +1,11 @@
 package cn.wzy.sport.service.impl;
 
+import cn.wzy.sport.dao.RoomDao;
+import cn.wzy.sport.dao.Sport_LogDao;
 import cn.wzy.sport.dao.User_InfoDao;
 import cn.wzy.sport.dao.impl.RedisDao;
+import cn.wzy.sport.entity.Room;
+import cn.wzy.sport.entity.Sport_Log;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
 import cn.wzy.sport.service.model.LoginResult;
@@ -16,6 +20,7 @@ import sun.misc.BASE64Encoder;
 import java.util.List;
 
 import static cn.wzy.sport.service.constant.RoleConstant.ORDINARY;
+import static cn.wzy.sport.service.constant.SportStatus.END;
 import static cn.wzy.sport.service.constant.StatusConstant.ACTIVE;
 import static cn.wzy.sport.service.constant.StatusConstant.LOCK;
 import static cn.wzy.sport.service.constant.UserConstant.*;
@@ -33,6 +38,12 @@ public class User_InfoServiceImpl implements User_InfoService {
 
 	@Autowired
 	private RedisDao redisDao;
+
+	@Autowired
+	private RoomDao roomDao;
+
+	@Autowired
+	private Sport_LogDao logDao;
 
 
 	private static BASE64Encoder encoder = new BASE64Encoder();
@@ -87,17 +98,28 @@ public class User_InfoServiceImpl implements User_InfoService {
 	}
 
 	@Override
-	public User_Info queryUser(Integer userId) {
-		User_Info redis_data = redisDao.getUser(userId);
-		if (redis_data == null) {
-			User_Info result = userInfoDao.selectByPrimaryKey(userId);
-			if (result != null) {
-				redisDao.putUser(result);
+	public User_Info queryUserStatus(Integer userId) {
+		User_Info result = redisDao.getUser(userId);
+		if (result == null) {
+			result = userInfoDao.selectByPrimaryKey(userId);
+			if (result == null) {
+				return null;
 			}
-			return result;
-		} else {
-			return redis_data;
 		}
+		if (result.getUsRoomid() != -1) { //It's in sport's room
+			Room room = roomDao.selectByPrimaryKey(result.getUsRoomid());
+			if (room.getRoStatus() == END) {//this room is closed.
+				result.setUsRoomid(-1);
+				redisDao.putUser(result);//flush the cache
+				if (room.getRoOwnerid() != result.getId()) {//the sport has done
+					Sport_Log log = new Sport_Log(null
+						,room.getRoSportname(),2
+						,userId,room.getRoStartdate());
+					logDao.insert(log);
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override

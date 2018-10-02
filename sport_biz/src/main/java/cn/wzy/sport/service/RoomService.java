@@ -1,6 +1,7 @@
 package cn.wzy.sport.service;
 
 import cn.wzy.sport.entity.Room;
+import cn.wzy.sport.service.VO.RoomVO;
 import org.cn.wzy.query.BaseQuery;
 
 import java.util.List;
@@ -38,4 +39,11 @@ public interface RoomService {
 	 * @return
 	 */
 	boolean enterNewRoom(Integer userId, Integer roomId);
+
+	/**
+	 * create a new room
+	 * @param room record
+	 * @return result
+	 */
+	boolean create(RoomVO room);
 }

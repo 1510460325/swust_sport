@@ -28,7 +28,7 @@ public class InitialListener implements ServletContextListener {
 		log.info("refresh room-task start.");
 		WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(servletContextEvent.getServletContext());
 		refreshTask = (RefreshSports) ctx.getBean("refreshSports");
-		timer.schedule(refreshTask, 500, 60000);
+		timer.schedule(refreshTask, 500, 8000);
 		CommunityController.init(ctx);
 	}
 

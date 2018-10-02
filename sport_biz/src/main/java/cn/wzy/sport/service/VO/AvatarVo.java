@@ -1,4 +1,4 @@
-package cn.wzy.sport.VO;
+package cn.wzy.sport.service.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
