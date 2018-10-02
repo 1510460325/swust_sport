@@ -50,5 +50,19 @@
 
     <import resource="classpath:aop/spring-aop.xml"/>
     <import resource="classpath:mybatis/database.xml"/>
+    <!--redisconfig-->
+    <bean id="redisConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+        <property name="maxTotal" value="${redis.maxTotal}"/>
+    </bean>
+    <!--RedisDao-->
+    <bean id="redisCacheDao" class="cn.wzy.sport.dao.impl.RedisDao">
+        <constructor-arg name="config" ref="redisConfig"/>
+        <constructor-arg name="ip" value="${redis.host}"/>
+        <constructor-arg name="port" value="${redis.port}"/>
+        <constructor-arg name="password" value="${redis.password}"/>
+    </bean>
     <bean id="mappergenerator" class="org.cn.wzy.util.MapperingGenerator"/>
 </beans>

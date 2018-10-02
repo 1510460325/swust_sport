@@ -2,6 +2,7 @@ package cn.wzy.sport.service.impl;
 
 import cn.wzy.sport.dao.RoomDao;
 import cn.wzy.sport.dao.User_InfoDao;
+import cn.wzy.sport.dao.impl.RedisDao;
 import cn.wzy.sport.entity.Room;
 import cn.wzy.sport.service.RoomService;
 import org.cn.wzy.query.BaseQuery;
@@ -22,6 +23,9 @@ public class RoomServiceImpl implements RoomService {
 	private RoomDao roomDao;
 
 	@Autowired
+	private RedisDao redisDao;
+
+	@Autowired
 	private User_InfoDao userDao;
 
 	@Override
@@ -40,6 +44,7 @@ public class RoomServiceImpl implements RoomService {
 			return false;
 		}
 		int old = userDao.updateAndReturnOld(userId, roomId);
+		redisDao.remove(userId);
 		if (old == roomId) {
 			return true;
 		} else {

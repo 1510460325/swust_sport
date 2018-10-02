@@ -1,6 +1,7 @@
 package cn.wzy.sport.service.impl;
 
 import cn.wzy.sport.dao.User_InfoDao;
+import cn.wzy.sport.dao.impl.RedisDao;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
 import cn.wzy.sport.service.model.LoginResult;
@@ -30,6 +31,10 @@ public class User_InfoServiceImpl implements User_InfoService {
 
 	@Autowired
 	private User_InfoDao userInfoDao;
+
+	@Autowired
+	private RedisDao redisDao;
+
 
 	private static BASE64Encoder encoder = new BASE64Encoder();
 
@@ -83,11 +88,14 @@ public class User_InfoServiceImpl implements User_InfoService {
 
 	@Override
 	public User_Info queryUser(Integer userId) {
-		User_Info result = userInfoDao.selectByPrimaryKey(userId);
-		if (result != null) {
-			result.setUsPassword(null);
+		User_Info redis_data = redisDao.getUser(userId);
+		if (redis_data == null) {
+			User_Info result = userInfoDao.selectByPrimaryKey(userId);
+			redisDao.putUser(result);
+			return result;
+		} else  {
+			return redis_data;
 		}
-		return result;
 	}
 
 	@Override
@@ -112,6 +120,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 
 	@Override
 	public int update(User_Info user_info) {
+		redisDao.remove(user_info.getId());
 		return this.userInfoDao.updateByPrimaryKeySelective(user_info);
 	}
 
@@ -125,6 +134,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 			if (StreamsUtil.download(relativePath, fileName, avatar))
 				record.setUsImg("/person/" + fileName);
 		}
+		redisDao.remove(userId);
 		return this.userInfoDao.updateByPrimaryKeySelective(record) == 1;
 	}
 }
