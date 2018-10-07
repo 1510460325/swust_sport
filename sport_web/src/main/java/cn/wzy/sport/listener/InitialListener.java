@@ -1,14 +1,16 @@
 package cn.wzy.sport.listener;
 
 import cn.wzy.sport.controller.CommunityController;
-import cn.wzy.sport.timer.RefreshSports;
+import cn.wzy.sport.service.RoomService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Create by Wzy
@@ -18,24 +20,28 @@ import java.util.Timer;
 @Log4j
 public class InitialListener implements ServletContextListener {
 
-	private Timer timer;
-
-	private RefreshSports refreshTask;
+	private ScheduledThreadPoolExecutor service;
+	private RoomService roomService;
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		timer = new Timer("refresh rooms", true);
-		log.info("refresh room-task start.");
+		service = ((ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1));
+		log.info("**********refresh room-task start**********");
 		WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(servletContextEvent.getServletContext());
-		refreshTask = (RefreshSports) ctx.getBean("refreshSports");
-		timer.schedule(refreshTask, 500, 8000);
+		roomService = ctx.getBean(RoomService.class);
+		service.scheduleWithFixedDelay(new Runnable() {
+			@Override
+			public void run() {
+				roomService.refreshStatus();
+			}
+		}, 0, 8, TimeUnit.SECONDS);
 		CommunityController.init(ctx);
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		log.info("refresh room-task shutdown.");
-		timer.cancel();
+		service.shutdown();
+		log.info("**********refresh room-task shutdown**********");
 		CommunityController.shutdown();
 	}
 }
