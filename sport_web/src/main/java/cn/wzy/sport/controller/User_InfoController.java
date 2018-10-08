@@ -155,7 +155,7 @@ public class User_InfoController extends BaseController {
 	private void checkAccess(User_Info user_info) {
 		Integer roleId = (Integer) ValueOfClaims("roleId");
 		Integer userId = (Integer) ValueOfClaims("userId");
-		if (roleId != ADMIN) {
+		if (roleId != ADMIN.val()) {
 			user_info.setId(userId);
 			user_info.setUsRole(null);
 			user_info.setUsStatus(null);

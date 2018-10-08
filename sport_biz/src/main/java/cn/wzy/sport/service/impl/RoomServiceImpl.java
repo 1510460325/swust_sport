@@ -85,7 +85,7 @@ public class RoomServiceImpl implements RoomService {
 		record.setRoStartdate(new Date(room.getRoStart()))
 			.setRoEnddate(new Date(room.getRoEnd()))
 			.setRoNum(1)
-			.setRoStatus(READY);
+			.setRoStatus(READY.val());
 		roomDao.insertSelective(record);
 		//update the user status
 		User_Info user = new User_Info();

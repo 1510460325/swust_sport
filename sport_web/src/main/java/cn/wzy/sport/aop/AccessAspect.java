@@ -42,7 +42,7 @@ public class AccessAspect {
 
 		//从jwt中获取请求者的roleId
 		Integer roleId = (Integer) controller.ValueOfClaims("roleId");
-		roleId = roleId == null ? VISITOR : roleId;
+		roleId = roleId == null ? VISITOR.val() : roleId;
 		Integer userId = (Integer) controller.ValueOfClaims("userId");
 		userId = userId == null ? -1 : userId;
 		String api = request.getRequestURI().replaceAll(request.getContextPath(), "");

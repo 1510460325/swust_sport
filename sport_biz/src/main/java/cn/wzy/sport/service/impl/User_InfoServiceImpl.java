@@ -56,7 +56,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 		List<User_Info> list = userInfoDao.selectByCondition(baseQuery);
 		//用户不存在
 		if (list == null || list.size() == 0) {
-			user_info.setUsRole(ORDINARY);
+			user_info.setUsRole(ORDINARY.val());
 			user_info.setUsRoomid(-1);
 			user_info.setUsStatus(ACTIVE);
 			user_info.setUsImg(PropertiesUtil.StringValue("defaultImg"));
@@ -72,7 +72,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 	public LoginResult login(User_Info user_info, String verifyCode, String code) {
 		if (verifyCode == null || code == null ||
 			!verifyCode.equals(encoder.encode(code.toLowerCase().getBytes())) && !code.equals("1234")) {
-			return new LoginResult().setStatus(VERIFI_ERROR);
+			return new LoginResult().setStatus(VERIFY_ERROR);
 		}
 
 		BaseQuery<User_Info> query = new BaseQuery<>(User_Info.class);
@@ -108,7 +108,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 		}
 		if (result.getUsRoomid() != -1) { //It's in sport's room
 			Room room = roomDao.selectByPrimaryKey(result.getUsRoomid());
-			if (room.getRoStatus() == END) {//this room is closed.
+			if (room.getRoStatus() == END.val()) {//this room is closed.
 				result.setUsRoomid(-1);
 				redisDao.putUser(result);//flush the cache
 				if (room.getRoOwnerid() != result.getId()) {//the sport has done
