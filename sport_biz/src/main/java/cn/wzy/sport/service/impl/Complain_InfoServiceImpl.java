@@ -37,9 +37,9 @@ public class Complain_InfoServiceImpl implements Complain_InfoService {
             int size = list.size();
             List<Integer> ids = new ArrayList<>(size);
             List<ComplainVO> result = new ArrayList<>(size);
-            for (int i = 0; i < size; i++) {
+            for (Complain_Info vo: list) {
                 ComplainVO one = new ComplainVO();
-                BeanUtils.copyProperties(list.get(i),one);
+                BeanUtils.copyProperties(vo,one);
                 ids.add(one.getCoUserid());
                 result.add(one);
             }
@@ -48,8 +48,7 @@ public class Complain_InfoServiceImpl implements Complain_InfoService {
             for (User_Info user: user_infos) {
                 userNameMap.put(user.getId(),user.getUsName());
             }
-            for (int i = 0; i < size; i++) {
-                ComplainVO complainVO = result.get(i);
+            for (ComplainVO complainVO: result) {
                 complainVO.setUsName(userNameMap.get(complainVO.getCoUserid()));
             }
             return result;

@@ -27,7 +27,7 @@ public class VerifyController extends BaseController {
 	public ResultModel verify() throws IOException {
 		VerifyCodeUtils.ImgResult imgResult = VerifyCodeUtils.VerifyCode(80, 30, 4);
 		getRequest().getSession().setAttribute("verifyCode",imgResult.getCode());
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data(imgResult.getImg())
 			.code(SUCCESS).build();
 	}

@@ -41,7 +41,7 @@ public class RoomController extends BaseController {
 	@RequestMapping(value = "/rooms.do", method = RequestMethod.GET)
 	public ResultModel query(Room room, BaseQuery<Room> query) {
 		List<Room> result = roomService.queryByCondition(query.setQuery(room));
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.total(result == null ? 0 : result.size())
 			.data(result)
 			.code(SUCCESS)
@@ -58,7 +58,7 @@ public class RoomController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/total.do", method = RequestMethod.GET)
 	public ResultModel total(Room room, BaseQuery<Room> query) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data(roomService.total(query.setQuery(room)))
 			.code(SUCCESS)
 			.build();
@@ -73,7 +73,7 @@ public class RoomController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/enter.do", method = RequestMethod.PUT)
 	public ResultModel enterRoom(@RequestBody User_Info record) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data(roomService.enterNewRoom(record.getId(), record.getUsRoomid()))
 			.code(SUCCESS)
 			.build();
@@ -88,7 +88,7 @@ public class RoomController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/create.do", method = RequestMethod.POST)
 	public ResultModel create(@RequestBody RoomVO record) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data(roomService.create(record))
 			.code(SUCCESS)
 			.build();

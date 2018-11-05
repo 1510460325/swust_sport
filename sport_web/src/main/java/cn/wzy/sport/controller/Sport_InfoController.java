@@ -37,7 +37,7 @@ public class Sport_InfoController extends BaseController {
 	@RequestMapping(value = "/sports.do", method = RequestMethod.GET)
 	public ResultModel sports(BaseQuery<Sport_Info> query, Sport_Info sport_info) {
 		List<Sport_Info> reslut = sport_infoService.querySports(query.setQuery(sport_info));
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(reslut)
 			.total(reslut == null ? 0 : reslut.size())
@@ -53,7 +53,7 @@ public class Sport_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/total.do", method = RequestMethod.GET)
 	public ResultModel total(BaseQuery<Sport_Info> query, Sport_Info sport_info) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(sport_infoService.total(query.setQuery(sport_info)))
 			.build();
@@ -70,7 +70,7 @@ public class Sport_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/update.do", method = RequestMethod.PUT)
 	public ResultModel update(Sport_Info sport_info, String file1, String file2) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(sport_infoService.update(sport_info, file1, file2))
 			.build();
@@ -85,7 +85,7 @@ public class Sport_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/delete.do", method = RequestMethod.DELETE)
 	public ResultModel deleteSport(Sport_Info sport_info) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(sport_infoService.deleteSport(sport_info.getId()))
 			.build();
@@ -102,7 +102,7 @@ public class Sport_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/insert.do", method = RequestMethod.POST)
 	public ResultModel insertOne(Sport_Info sport_info, String file1, String file2) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(sport_infoService.insert(sport_info, file1, file2))
 			.build();

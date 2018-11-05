@@ -35,7 +35,7 @@ public class User_MessageController extends BaseController {
     @RequestMapping(value = "/messages.do",method = RequestMethod.GET)
     public ResultModel queryMessages(BaseQuery<User_Message> query, User_Message user_message){
         query.setQuery(user_message);
-        return new ResultModel().builder()
+        return ResultModel.builder()
                 .code(SUCCESS)
                 .data(user_messageService.queryMessage(query))
                 .build();
@@ -44,7 +44,7 @@ public class User_MessageController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/userMessages.do",method = RequestMethod.GET)
     public ResultModel userMessages(String username, Integer roomId){
-        return new ResultModel().builder()
+        return ResultModel.builder()
                 .code(SUCCESS)
                 .data(user_messageService.queryByUser(username,roomId))
                 .build();

@@ -45,7 +45,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
 	public ResultModel register(@RequestBody User_Info user_info) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data(user_infoService.register(user_info))
 			.code(SUCCESS)
 			.build();
@@ -66,13 +66,13 @@ public class User_InfoController extends BaseController {
 			Map<String, Object> claims = new HashMap<>(2);
 			claims.put("roleId", result.getUsRole());
 			claims.put("userId", result.getId());
-			return new ResultModel().builder()
+			return ResultModel.builder()
 				.data(result)
 				.code(SUCCESS)
 				.token(TokenUtil.tokens(claims))
 				.build();
 		}
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data(result)
 			.code(SUCCESS)
 			.build();
@@ -87,7 +87,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/user.do", method = RequestMethod.GET)
 	public ResultModel user_info(Integer userId) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.queryUserStatus(userId))
 			.build();
@@ -104,7 +104,7 @@ public class User_InfoController extends BaseController {
 	@RequestMapping(value = "/users.do", method = RequestMethod.GET)
 	public ResultModel Usersquery(User_Info user_info, BaseQuery<User_Info> query) {
 		List<User_Info> result = user_infoService.queryUsers(user_info, query);
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(result)
 			.total(result == null ? 0 : result.size())
@@ -120,7 +120,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/userCount.do", method = RequestMethod.GET)
 	public ResultModel queryCount(User_Info user_info) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.queryCountByCondition(user_info))
 			.build();
@@ -136,7 +136,7 @@ public class User_InfoController extends BaseController {
 	@RequestMapping(value = "/update.do", method = RequestMethod.PUT)
 	public ResultModel update(@RequestBody User_Info user_info) {
 		checkAccess(user_info);
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.update(user_info))
 			.build();
@@ -146,7 +146,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/setAvatar.do", method = RequestMethod.PUT)
 	public ResultModel setAvatar(@RequestBody AvatarVo  record) {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.setAvatar(record.getUserId(), record.getAvatar()))
 			.build();
@@ -174,10 +174,10 @@ public class User_InfoController extends BaseController {
 		if (open != null)
 			AccessAspect.open = open;
 		if (AccessAspect.open)
-			return new ResultModel().builder()
+			return ResultModel.builder()
 				.data("开启ip查询")
 				.build();
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data("关闭ip查询")
 			.build();
 	}
@@ -190,7 +190,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/isOpen.do", method = RequestMethod.GET)
 	public ResultModel isOPen() {
-		return new ResultModel().builder()
+		return ResultModel.builder()
 			.data(AccessAspect.open)
 			.build();
 	}

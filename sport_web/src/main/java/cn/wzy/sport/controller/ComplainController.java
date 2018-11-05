@@ -33,7 +33,7 @@ public class ComplainController extends BaseController {
     @RequestMapping(value = "/complains.do",method = RequestMethod.GET)
     public ResultModel complains() {
         List<ComplainVO> result = complain_infoService.queryAllComplains();
-        return new ResultModel().builder()
+        return ResultModel.builder()
                 .code(SUCCESS)
                 .data(result)
                 .total(result == null ? 0 : result.size())
@@ -48,7 +48,7 @@ public class ComplainController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/delete.do",method = RequestMethod.DELETE)
     public ResultModel deleComplains(Integer id) {
-        return new ResultModel().builder()
+        return ResultModel.builder()
                 .code(SUCCESS)
                 .data(complain_infoService.deleComplain(id))
                 .build();
