@@ -36,11 +36,11 @@ public class Sport_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/sports.do", method = RequestMethod.GET)
 	public ResultModel sports(BaseQuery<Sport_Info> query, Sport_Info sport_info) {
-		List<Sport_Info> reslut = sport_infoService.querySports(query.setQuery(sport_info));
+		List<Sport_Info> result = sport_infoService.querySports(query.setQuery(sport_info));
 		return ResultModel.builder()
 			.code(SUCCESS)
-			.data(reslut)
-			.total(reslut == null ? 0 : reslut.size())
+			.data(result)
+			.total(result == null ? 0 : result.size())
 			.build();
 	}
 
