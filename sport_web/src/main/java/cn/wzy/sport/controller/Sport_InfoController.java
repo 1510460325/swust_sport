@@ -2,11 +2,13 @@ package cn.wzy.sport.controller;
 
 import cn.wzy.sport.entity.Sport_Info;
 import cn.wzy.sport.service.Sport_InfoService;
+import cn.wzy.sport.service.VO.Sport_InfoVO;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
 import org.cn.wzy.query.BaseQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,18 +63,15 @@ public class Sport_InfoController extends BaseController {
 
 	/**
 	 * update the sport_info.
-	 *
-	 * @param sport_info sport_info
-	 * @param file1      module img
-	 * @param file2      room img
+	 * @param record record.
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/update.do", method = RequestMethod.PUT)
-	public ResultModel update(Sport_Info sport_info, String file1, String file2) {
+	public ResultModel update(@RequestBody Sport_InfoVO record) {
 		return ResultModel.builder()
 			.code(SUCCESS)
-			.data(sport_infoService.update(sport_info, file1, file2))
+			.data(sport_infoService.update(record))
 			.build();
 	}
 
@@ -93,18 +92,15 @@ public class Sport_InfoController extends BaseController {
 
 	/**
 	 * add the new sport
-	 *
-	 * @param sport_info sport_info
-	 * @param file1      module img
-	 * @param file2      room img
+	 * @param record
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/insert.do", method = RequestMethod.POST)
-	public ResultModel insertOne(Sport_Info sport_info, String file1, String file2) {
+	public ResultModel insertOne(@RequestBody Sport_InfoVO record) {
 		return ResultModel.builder()
 			.code(SUCCESS)
-			.data(sport_infoService.insert(sport_info, file1, file2))
+			.data(sport_infoService.insert(record))
 			.build();
 	}
 }

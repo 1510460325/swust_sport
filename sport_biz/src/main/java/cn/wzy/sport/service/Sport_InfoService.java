@@ -1,6 +1,7 @@
 package cn.wzy.sport.service;
 
 import cn.wzy.sport.entity.Sport_Info;
+import cn.wzy.sport.service.VO.Sport_InfoVO;
 import org.cn.wzy.query.BaseQuery;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,14 +28,13 @@ public interface Sport_InfoService {
 	 * @return
 	 */
 	int total(BaseQuery<Sport_Info> query);
+
 	/**
 	 * 更新运动模块
-	 *
-	 * @param sport_info
-	 * @param file1
+	 * @param record
 	 * @return
 	 */
-	Integer update(Sport_Info sport_info, String file1, String file2);
+	Integer update(Sport_InfoVO record);
 
 	/**
 	 * 删除sport
@@ -46,11 +46,8 @@ public interface Sport_InfoService {
 
 	/**
 	 * 新添运动模块
-	 *
-	 * @param sport_info
-	 * @param file1
-	 * @param file2
+	 * @param record
 	 * @return
 	 */
-	Integer insert(Sport_Info sport_info, String file1, String file2);
+	Integer insert(Sport_InfoVO record);
 }
