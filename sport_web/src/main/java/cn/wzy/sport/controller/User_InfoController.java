@@ -1,12 +1,11 @@
 package cn.wzy.sport.controller;
 
-import cn.wzy.sport.service.VO.AvatarVo;
 import cn.wzy.sport.aop.AccessAspect;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
+import cn.wzy.sport.service.VO.AvatarVo;
 import cn.wzy.sport.service.constant.UserConstant;
 import cn.wzy.sport.service.model.LoginResult;
-import com.sun.istack.internal.NotNull;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
 import org.cn.wzy.query.BaseQuery;
@@ -146,7 +145,7 @@ public class User_InfoController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/setAvatar.do", method = RequestMethod.PUT)
-	public ResultModel setAvatar(@RequestBody AvatarVo  record) {
+	public ResultModel setAvatar(@RequestBody AvatarVo record) {
 		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.setAvatar(record.getUserId(), record.getAvatar()))
@@ -156,12 +155,13 @@ public class User_InfoController extends BaseController {
 
 	/**
 	 * sign
+	 *
 	 * @param userId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/sign.do", method = RequestMethod.GET)
-	public ResultModel sign(@NotNull Integer userId) {
+	public ResultModel sign(Integer userId) {
 		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.sign(userId))
@@ -171,12 +171,13 @@ public class User_InfoController extends BaseController {
 
 	/**
 	 * sports logs
+	 *
 	 * @param userId
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/sportsLog.do", method = RequestMethod.GET)
-	public ResultModel sportsLog(@NotNull Integer userId) {
+	public ResultModel sportsLog(Integer userId) {
 		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.sportsLog(userId))

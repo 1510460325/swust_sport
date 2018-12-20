@@ -186,11 +186,12 @@ public class User_InfoServiceImpl implements User_InfoService {
 	@Override
 	public Map<Object, Object> sportsLog(Integer userId) {
 		BaseQuery<Sport_Log> sportsQuery = new BaseQuery<>(Sport_Log.class);
+		sportsQuery.getQuery().setSpUserid(userId);
 		List<Sport_Log> sportsLog = logDao.selectByCondition(sportsQuery);
 
 		BaseQuery<Sign_Info> sign_infoBaseQuery = new BaseQuery<>(Sign_Info.class);
+		sign_infoBaseQuery.getQuery().setSiUserid(userId);
 		List<Sign_Info> sign_infos = signDao.selectByCondition(sign_infoBaseQuery);
-
 		Map<Object, Object> res = new HashMap<>();
 		res.put("sports",sportsLog);
 		res.put("signs",sign_infos);
