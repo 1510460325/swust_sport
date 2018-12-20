@@ -1,10 +1,12 @@
 package cn.wzy.sport.service.impl;
 
 import cn.wzy.sport.dao.RoomDao;
+import cn.wzy.sport.dao.Sign_InfoDao;
 import cn.wzy.sport.dao.Sport_LogDao;
 import cn.wzy.sport.dao.User_InfoDao;
 import cn.wzy.sport.dao.impl.RedisDao;
 import cn.wzy.sport.entity.Room;
+import cn.wzy.sport.entity.Sign_Info;
 import cn.wzy.sport.entity.Sport_Log;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
@@ -17,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static cn.wzy.sport.service.constant.RoleConstant.ORDINARY;
 import static cn.wzy.sport.service.constant.SportStatus.END;
@@ -44,6 +48,9 @@ public class User_InfoServiceImpl implements User_InfoService {
 
 	@Autowired
 	private Sport_LogDao logDao;
+
+	@Autowired
+	private Sign_InfoDao signDao;
 
 
 	private static BASE64Encoder encoder = new BASE64Encoder();
@@ -113,8 +120,8 @@ public class User_InfoServiceImpl implements User_InfoService {
 				redisDao.putUser(result);//flush the cache
 				if (room.getRoOwnerid() != result.getId()) {//the sport has done
 					Sport_Log log = new Sport_Log(null
-						,room.getRoSportname(),2
-						,userId,room.getRoStartdate());
+						, room.getRoSportname(), 2
+						, userId, room.getRoStartdate());
 					logDao.insert(log);
 				}
 			}
@@ -157,5 +164,36 @@ public class User_InfoServiceImpl implements User_InfoService {
 		}
 		redisDao.remove(userId);
 		return this.userInfoDao.updateByPrimaryKeySelective(record) == 1;
+	}
+
+	@Override
+	public boolean sign(Integer userId) {
+		Sign_Info sign_info = new Sign_Info();
+		sign_info.setSiUserid(userId);
+		BaseQuery<Sign_Info> query = new BaseQuery<>(1, 1, sign_info);
+		List<Sign_Info> records = signDao.selectByCondition(query);
+		if (records == null || records.size() == 0 || records.get(0).getSiSigndate() == null) {
+			return signDao.insert(sign_info) == 1;
+		} else {
+			long gap = System.currentTimeMillis() - records.get(0).getSiSigndate().getTime();
+			if (gap < 24 * 60 * 60 * 1000) {
+				return false;
+			}
+			return signDao.insert(sign_info) == 1;
+		}
+	}
+
+	@Override
+	public Map<Object, Object> sportsLog(Integer userId) {
+		BaseQuery<Sport_Log> sportsQuery = new BaseQuery<>(Sport_Log.class);
+		List<Sport_Log> sportsLog = logDao.selectByCondition(sportsQuery);
+
+		BaseQuery<Sign_Info> sign_infoBaseQuery = new BaseQuery<>(Sign_Info.class);
+		List<Sign_Info> sign_infos = signDao.selectByCondition(sign_infoBaseQuery);
+
+		Map<Object, Object> res = new HashMap<>();
+		res.put("sports",sportsLog);
+		res.put("signs",sign_infos);
+		return res;
 	}
 }

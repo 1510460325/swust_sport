@@ -6,6 +6,7 @@ import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.query.BaseQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Create by Wzy
@@ -72,4 +73,20 @@ public interface User_InfoService {
 	 * @return
 	 */
 	boolean setAvatar(Integer userId, String avatar);
+
+
+	/**
+	 * user sign
+	 * @param userId
+	 * @return
+	 */
+	boolean sign(Integer userId);
+
+
+	/**
+	 * 运动日志
+	 * @param userId
+	 * @return
+	 */
+	Map<Object, Object> sportsLog(Integer userId);
 }

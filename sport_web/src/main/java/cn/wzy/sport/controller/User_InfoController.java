@@ -6,6 +6,7 @@ import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
 import cn.wzy.sport.service.constant.UserConstant;
 import cn.wzy.sport.service.model.LoginResult;
+import com.sun.istack.internal.NotNull;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
 import org.cn.wzy.query.BaseQuery;
@@ -149,6 +150,36 @@ public class User_InfoController extends BaseController {
 		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.setAvatar(record.getUserId(), record.getAvatar()))
+			.build();
+	}
+
+
+	/**
+	 * sign
+	 * @param userId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/sign.do", method = RequestMethod.GET)
+	public ResultModel sign(@NotNull Integer userId) {
+		return ResultModel.builder()
+			.code(SUCCESS)
+			.data(user_infoService.sign(userId))
+			.build();
+	}
+
+
+	/**
+	 * sports logs
+	 * @param userId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/sportsLog.do", method = RequestMethod.GET)
+	public ResultModel sportsLog(@NotNull Integer userId) {
+		return ResultModel.builder()
+			.code(SUCCESS)
+			.data(user_infoService.sportsLog(userId))
 			.build();
 	}
 
