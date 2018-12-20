@@ -64,7 +64,8 @@ function insertOne(data) {
             Accept: "application/json; charset=utf-8",
             Authorization: token
         },
-        data: data,
+        contentType : "application/json",
+        data: JSON.stringify(data),
         cache: false,
         success: function (result) {
             console.log(result.data);

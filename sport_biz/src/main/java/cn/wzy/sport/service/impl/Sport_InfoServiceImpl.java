@@ -47,6 +47,7 @@ public class Sport_InfoServiceImpl implements Sport_InfoService {
 			if (StreamsUtil.download(room, fileName, record.getFile2()))
 				sport_info.setSpRoimg("/room/" + fileName);
 		}
+		sport_info.setSpCreatdate(new Date());
 		return sport_infoDao.insertSelective(sport_info);
 	}
 
