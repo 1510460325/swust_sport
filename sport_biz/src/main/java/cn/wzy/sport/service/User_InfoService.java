@@ -2,6 +2,7 @@ package cn.wzy.sport.service;
 
 import cn.wzy.sport.entity.Room;
 import cn.wzy.sport.entity.User_Info;
+import cn.wzy.sport.service.VO.ResetPwdVO;
 import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.query.BaseQuery;
 
@@ -89,4 +90,11 @@ public interface User_InfoService {
 	 * @return
 	 */
 	Map<Object, Object> sportsLog(Integer userId);
+
+	/**
+	 * 更新密码
+	 * @param record
+	 * @return
+	 */
+	boolean setPass(ResetPwdVO record);
 }

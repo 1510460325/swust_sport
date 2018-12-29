@@ -4,6 +4,7 @@ import cn.wzy.sport.aop.AccessAspect;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
 import cn.wzy.sport.service.VO.AvatarVo;
+import cn.wzy.sport.service.VO.ResetPwdVO;
 import cn.wzy.sport.service.constant.UserConstant;
 import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.controller.BaseController;
@@ -149,6 +150,17 @@ public class User_InfoController extends BaseController {
 		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.setAvatar(record.getUserId(), record.getAvatar()))
+			.build();
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "/setPass.do", method = RequestMethod.PUT)
+	public ResultModel setPass(@RequestBody ResetPwdVO record) {
+		record.setUserId(((Integer) ValueOfClaims("userId")));
+		return ResultModel.builder()
+			.code(SUCCESS)
+			.data(user_infoService.setPass(record))
 			.build();
 	}
 

@@ -10,6 +10,7 @@ import cn.wzy.sport.entity.Sign_Info;
 import cn.wzy.sport.entity.Sport_Log;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
+import cn.wzy.sport.service.VO.ResetPwdVO;
 import cn.wzy.sport.service.model.LoginResult;
 import org.cn.wzy.query.BaseQuery;
 import org.cn.wzy.util.PropertiesUtil;
@@ -197,5 +198,15 @@ public class User_InfoServiceImpl implements User_InfoService {
 		res.put("sports",sportsLog);
 		res.put("signs",sign_infos);
 		return res;
+	}
+
+	@Override
+	public boolean setPass(ResetPwdVO record) {
+		User_Info user_info = userInfoDao.selectByPrimaryKey(record.getUserId());
+		if (user_info == null|| user_info.getUsPassword() == null || !user_info.getUsPassword().equals(record.getOldPwd())) {
+			return false;
+		}
+		user_info.setUsPassword(record.getNewPwd());
+		return userInfoDao.updateByPrimaryKeySelective(user_info) == 1;
 	}
 }
