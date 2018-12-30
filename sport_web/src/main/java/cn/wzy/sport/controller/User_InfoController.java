@@ -198,6 +198,9 @@ public class User_InfoController extends BaseController {
 	private void checkAccess(User_Info user_info) {
 		Integer roleId = (Integer) ValueOfClaims("roleId");
 		Integer userId = (Integer) ValueOfClaims("userId");
+		if (user_info.getId() == null) {
+			user_info.setId((Integer) ValueOfClaims("userId"));
+		}
 		user_info.setUsPassword(null)
 			.setUsName(null)
 			.setUsRoomid(null);
