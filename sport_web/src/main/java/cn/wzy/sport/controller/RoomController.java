@@ -73,6 +73,7 @@ public class RoomController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/enter.do", method = RequestMethod.PUT)
 	public ResultModel enterRoom(@RequestBody User_Info record) {
+		record.setId((Integer) ValueOfClaims("userId"));
 		return ResultModel.builder()
 			.data(roomService.enterNewRoom(record.getId(), record.getUsRoomid()))
 			.code(SUCCESS)
@@ -88,6 +89,7 @@ public class RoomController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/create.do", method = RequestMethod.POST)
 	public ResultModel create(@RequestBody RoomVO record) {
+		record.setRoOwnerid((Integer) ValueOfClaims("userId"));
 		return ResultModel.builder()
 			.data(roomService.create(record))
 			.code(SUCCESS)

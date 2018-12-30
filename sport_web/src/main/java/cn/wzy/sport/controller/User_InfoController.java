@@ -147,6 +147,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/setAvatar.do", method = RequestMethod.PUT)
 	public ResultModel setAvatar(@RequestBody AvatarVo record) {
+		record.setUserId((Integer) ValueOfClaims("userId"));
 		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.setAvatar(record.getUserId(), record.getAvatar()))
@@ -157,7 +158,7 @@ public class User_InfoController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/setPass.do", method = RequestMethod.PUT)
 	public ResultModel setPass(@RequestBody ResetPwdVO record) {
-		record.setUserId(((Integer) ValueOfClaims("userId")));
+		record.setUserId((Integer) ValueOfClaims("userId"));
 		return ResultModel.builder()
 			.code(SUCCESS)
 			.data(user_infoService.setPass(record))
@@ -167,16 +168,14 @@ public class User_InfoController extends BaseController {
 
 	/**
 	 * sign
-	 *
-	 * @param userId
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/sign.do", method = RequestMethod.GET)
-	public ResultModel sign(Integer userId) {
+	@RequestMapping(value = "/sign.do", method = RequestMethod.POST)
+	public ResultModel sign() {
 		return ResultModel.builder()
 			.code(SUCCESS)
-			.data(user_infoService.sign(userId))
+			.data(user_infoService.sign((Integer) ValueOfClaims("userId")))
 			.build();
 	}
 
@@ -199,6 +198,9 @@ public class User_InfoController extends BaseController {
 	private void checkAccess(User_Info user_info) {
 		Integer roleId = (Integer) ValueOfClaims("roleId");
 		Integer userId = (Integer) ValueOfClaims("userId");
+		user_info.setUsPassword(null)
+			.setUsName(null)
+			.setUsRoomid(null);
 		if (roleId != ADMIN.val()) {
 			user_info.setId(userId);
 			user_info.setUsRole(null);

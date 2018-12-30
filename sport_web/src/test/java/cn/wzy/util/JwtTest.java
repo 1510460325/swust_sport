@@ -8,6 +8,8 @@ import org.cn.wzy.util.PropertiesUtil;
 import org.cn.wzy.util.TokenUtil;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +46,9 @@ public class JwtTest {
 
 	@Test
 	public void test2() {
-		System.out.println(PropertiesUtil.StringValue("IpListener"));
+		Date date = new Date(1532172837000l);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(date);
+		System.out.println(sdf.format(date));
 	}
 }

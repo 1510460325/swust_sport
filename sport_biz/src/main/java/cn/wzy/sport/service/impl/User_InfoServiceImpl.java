@@ -65,7 +65,6 @@ public class User_InfoServiceImpl implements User_InfoService {
 		//用户不存在
 		if (list == null || list.size() == 0) {
 			user_info.setUsRole(ORDINARY.val());
-			user_info.setUsSex(2);
 			user_info.setUsRoomid(-1);
 			user_info.setUsStatus(ACTIVE);
 			user_info.setUsImg(PropertiesUtil.StringValue("defaultImg"));
