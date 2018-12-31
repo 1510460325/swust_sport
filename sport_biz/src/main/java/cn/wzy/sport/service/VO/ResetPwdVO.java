@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ResetPwdVO {
 
-	private Integer oldPwd;
+	private String oldPwd;
 
 	private String newPwd;
 
