@@ -96,4 +96,15 @@ public class RoomController extends BaseController {
 			.build();
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/end.do", method = RequestMethod.PUT)
+	public ResultModel end(@RequestBody RoomVO record) {
+		record.setRoOwnerid((Integer) ValueOfClaims("userId"));
+		return ResultModel.builder()
+			.data(roomService.end(record))
+			.code(SUCCESS)
+			.build();
+	}
+
+
 }

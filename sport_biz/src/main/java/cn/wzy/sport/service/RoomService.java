@@ -46,4 +46,11 @@ public interface RoomService {
 	 * @return result
 	 */
 	boolean create(RoomVO room);
+
+	/**
+	 * end the room
+	 * @param room
+	 * @return
+	 */
+	boolean end(RoomVO room);
 }

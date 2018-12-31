@@ -101,4 +101,19 @@ public class RoomServiceImpl implements RoomService {
 			.setSpSportdate(new Date());
 		return logDao.insert(log) == 1;
 	}
+
+	@Override
+	public boolean end(RoomVO room) {
+		if (room.getId() == null) {
+			return false;
+		}
+		Room record = roomDao.selectByPrimaryKey(room.getId());
+		if (record == null) {
+			return false;
+		} else if (record.getRoOwnerid().equals(room.getRoOwnerid())){
+			return roomDao.deleteByPrimaryKey(record.getId()) == 1;
+		} else {
+			return false;
+		}
+	}
 }
