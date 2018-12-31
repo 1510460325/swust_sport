@@ -2,6 +2,7 @@ package cn.wzy.service;
 
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.User_InfoService;
+import cn.wzy.sport.service.User_MessageService;
 import cn.wzy.sport.service.model.LoginResult;
 import cn.wzy.util.BaseDaoTest;
 import org.junit.Test;
@@ -17,6 +18,9 @@ public class User_InfoServiceTest extends BaseDaoTest {
 	@Autowired
 	private User_InfoService user_infoService;
 
+	@Autowired
+	private User_MessageService userMessageService;
+
 	@Test
 	public void register() {
 
@@ -30,6 +34,10 @@ public class User_InfoServiceTest extends BaseDaoTest {
 		LoginResult result = user_infoService.login(user_info, "asdf", "1234");
 		System.out.println(result);
 
+	}
+	@Test
+	public void test() {
+		System.out.println(userMessageService.queryMessByRoom(1));
 	}
 
 }

@@ -1,5 +1,6 @@
 package cn.wzy.sport.controller;
 
+import cn.wzy.sport.VO.UserMessVO;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.entity.User_Message;
 import cn.wzy.sport.service.User_InfoService;
@@ -17,6 +18,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
@@ -119,6 +121,13 @@ public class CommunityController {
 			}
 		}
 		friends.add(this);
+		List<UserMessVO> userMessVOS = service.queryMessByRoom(roomId);
+		StringBuilder msg = new StringBuilder();
+		String split = "!@#$%^$#history";
+		for (UserMessVO vo : userMessVOS) {
+			msg.append(split).append(history(vo));
+		}
+		session.getAsyncRemote().sendText(msg.toString());
 	}
 
 	@OnClose
@@ -160,6 +169,11 @@ public class CommunityController {
 
 	private String messageConvertion(String message) {
 		String split = "!@#$%^$#";
-		return user.getId() + split + user.getUsNickname() + split + user.getUsImg() + split + message;
+		return new Date().getTime() + split + user.getId() + split + user.getUsNickname() + split + user.getUsImg() + split + message;
+	}
+
+	private String history(UserMessVO vo) {
+		String split = "!@#$%^$#";
+		return vo.getDate().getTime() + split + vo.getUserId() + split + vo.getNickName() + split + vo.getImg() + split + vo.getMsg();
 	}
 }

@@ -1,5 +1,6 @@
 package cn.wzy.sport.service;
 
+import cn.wzy.sport.VO.UserMessVO;
 import cn.wzy.sport.entity.User_Message;
 import cn.wzy.sport.service.model.MessageVO;
 import cn.wzy.sport.service.model.User_MessageVO;
@@ -36,4 +37,12 @@ public interface User_MessageService {
      * @return
      */
     Integer save(User_Message record);
+
+
+    /**
+     * 查询房间聊天记录
+     * @param id
+     * @return
+     */
+    List<UserMessVO> queryMessByRoom(Integer id);
 }

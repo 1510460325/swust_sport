@@ -1,9 +1,12 @@
 package cn.wzy.sport.dao.impl;
 
+import cn.wzy.sport.VO.UserMessVO;
 import cn.wzy.sport.dao.User_MessageDao;
 import cn.wzy.sport.entity.User_Message;
 import org.cn.wzy.dao.impl.BaseDaoImpl;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Create by Wzy
@@ -15,5 +18,10 @@ public class User_MessageDaoImpl extends BaseDaoImpl<User_Message> implements Us
     @Override
     public String getNameSpace() {
         return "cn.wzy.sport.dao.User_MessageDao";
+    }
+
+    @Override
+    public List<UserMessVO> queryMessByRoom(Integer id) {
+        return getSqlSession().selectList(getNameSpace() + ".queryMessByRoom",id);
     }
 }

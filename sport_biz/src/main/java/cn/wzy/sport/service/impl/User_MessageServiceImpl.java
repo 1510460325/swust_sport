@@ -1,5 +1,6 @@
 package cn.wzy.sport.service.impl;
 
+import cn.wzy.sport.VO.UserMessVO;
 import cn.wzy.sport.dao.User_InfoDao;
 import cn.wzy.sport.dao.User_MessageDao;
 import cn.wzy.sport.entity.User_Info;
@@ -96,5 +97,10 @@ public class User_MessageServiceImpl implements User_MessageService {
     @Override
     public Integer save(User_Message record) {
         return user_messageDao.insert(record);
+    }
+
+    @Override
+    public List<UserMessVO> queryMessByRoom(Integer id) {
+        return user_messageDao.queryMessByRoom(id);
     }
 }
