@@ -11,17 +11,28 @@ import java.util.List;
  * 不短不长八字刚好
  */
 public interface Complain_InfoService {
-    /**
-     * 查看所有的反馈
-     * @return
-     */
-    List<ComplainVO> queryAllComplains();
+	/**
+	 * 查看所有的反馈
+	 *
+	 * @return
+	 */
+	List<ComplainVO> queryAllComplains();
 
-    /**
-     * 删除反馈
-     * @param id
-     * @return
-     */
-    Integer deleComplain(Integer id);
+	/**
+	 * 删除反馈
+	 *
+	 * @param id
+	 * @return
+	 */
+	Integer deleComplain(Integer id);
+
+
+	/**
+	 * 添加反馈
+	 *
+	 * @param record
+	 * @return
+	 */
+	boolean insert(Complain_Info record);
 
 }
