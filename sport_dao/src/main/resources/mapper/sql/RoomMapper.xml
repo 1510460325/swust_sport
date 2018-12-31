@@ -22,7 +22,7 @@
           AND ro_num = #{query.roNum,jdbcType=INTEGER}
       </if>
       <if test="query.roStatus != null" >
-          AND ro_status = #{query.roStatus,jdbcType=INTEGER}
+          AND ro_status != #{query.roStatus,jdbcType=INTEGER}
       </if>
       <if test="query.roOwnerid != null" >
           AND ro_ownerid = #{query.roOwnerid,jdbcType=INTEGER}

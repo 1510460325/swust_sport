@@ -1,9 +1,9 @@
 package cn.wzy.sport.controller;
 
-import cn.wzy.sport.service.VO.RoomVO;
 import cn.wzy.sport.entity.Room;
 import cn.wzy.sport.entity.User_Info;
 import cn.wzy.sport.service.RoomService;
+import cn.wzy.sport.service.VO.RoomVO;
 import org.cn.wzy.controller.BaseController;
 import org.cn.wzy.model.ResultModel;
 import org.cn.wzy.query.BaseQuery;
@@ -33,7 +33,7 @@ public class RoomController extends BaseController {
 	/**
 	 * query rooms by condition.
 	 *
-	 * @param room record
+	 * @param room  record
 	 * @param query page
 	 * @return
 	 */
@@ -51,7 +51,7 @@ public class RoomController extends BaseController {
 	/**
 	 * query total by condition.
 	 *
-	 * @param room record
+	 * @param room  record
 	 * @param query page
 	 * @return
 	 */
