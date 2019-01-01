@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,6 +174,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 		sign_info.setSiUserid(userId);
 		BaseQuery<Sign_Info> query = new BaseQuery<>(1, 1, sign_info);
 		List<Sign_Info> records = signDao.selectByCondition(query);
+		sign_info.setSiSigndate(new Date());
 		if (records == null || records.size() == 0 || records.get(0).getSiSigndate() == null) {
 			return signDao.insert(sign_info) == 1;
 		} else {
