@@ -117,8 +117,19 @@ public class User_InfoServiceImpl implements User_InfoService {
 		}
 		if (result.getUsRoomid() != -1) { //It's in sport's room
 			Room room = roomDao.selectByPrimaryKey(result.getUsRoomid());
+			if (room == null) {
+				result.setUsRoomid(-1);
+				redisDao.putUser(result);//flush the cache
+				userInfoDao.updateByPrimaryKeySelective(new User_Info()
+					.setId(userId)
+				.setUsRoomid(-1));
+				return result;
+			}
 			if (room.getRoStatus() == END.val()) {//this room is closed.
 				result.setUsRoomid(-1);
+				userInfoDao.updateByPrimaryKeySelective(new User_Info()
+					.setId(userId)
+					.setUsRoomid(-1));
 				redisDao.putUser(result);//flush the cache
 				if (room.getRoOwnerid() != result.getId()) {//the sport has done
 					Sport_Log log = new Sport_Log(null
