@@ -201,8 +201,12 @@ public class User_InfoServiceImpl implements User_InfoService {
 
 	@Override
 	public boolean setPass(ResetPwdVO record) {
-		User_Info user_info = userInfoDao.selectByPrimaryKey(record.getUserId());
-		if (user_info == null|| user_info.getUsPassword() == null || !user_info.getUsPassword().equals(record.getOldPwd())) {
+		User_Info user_info = new User_Info()
+			.setId(record.getUserId())
+			.setUsPassword(record.getOldPwd());
+		BaseQuery<User_Info> query = new BaseQuery<>();
+		query.setQuery(user_info);
+		if (userInfoDao.selectCountByCondition(query) == 0) {
 			return false;
 		}
 		user_info.setUsPassword(record.getNewPwd());
