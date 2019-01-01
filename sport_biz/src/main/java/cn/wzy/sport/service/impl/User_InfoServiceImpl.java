@@ -178,7 +178,7 @@ public class User_InfoServiceImpl implements User_InfoService {
 		if (records == null || records.size() == 0 || records.get(0).getSiSigndate() == null) {
 			return signDao.insert(sign_info) == 1;
 		} else {
-			long gap = System.currentTimeMillis() - records.get(0).getSiSigndate().getTime();
+			long gap = sign_info.getSiSigndate().getTime() - records.get(0).getSiSigndate().getTime();
 			if (gap < 24 * 60 * 60 * 1000) {
 				return false;
 			}
