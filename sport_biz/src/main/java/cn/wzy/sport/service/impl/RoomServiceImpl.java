@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+import static cn.wzy.sport.service.constant.SportStatus.END;
 import static cn.wzy.sport.service.constant.SportStatus.READY;
 import static cn.wzy.sport.service.constant.StatusConstant.LOCK;
 
@@ -111,7 +112,9 @@ public class RoomServiceImpl implements RoomService {
 		if (record == null) {
 			return false;
 		} else if (record.getRoOwnerid().equals(room.getRoOwnerid())){
-			return roomDao.deleteByPrimaryKey(record.getId()) == 1;
+			return roomDao.updateByPrimaryKeySelective(new Room()
+				.setId(room.getId())
+				.setRoStatus(END.val())) == 1;
 		} else {
 			return false;
 		}
