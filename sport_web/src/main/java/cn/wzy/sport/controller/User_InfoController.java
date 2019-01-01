@@ -201,13 +201,13 @@ public class User_InfoController extends BaseController {
 		if (user_info.getId() == null) {
 			user_info.setId((Integer) ValueOfClaims("userId"));
 		}
-		user_info.setUsPassword(null)
-			.setUsName(null)
-			.setUsRoomid(null);
 		if (roleId != ADMIN.val()) {
-			user_info.setId(userId);
-			user_info.setUsRole(null);
-			user_info.setUsStatus(null);
+			user_info.setUsPassword(null)
+				.setUsName(null)
+				.setUsRoomid(null)
+				.setId(userId)
+				.setUsRole(null)
+				.setUsStatus(null);
 		}
 	}
 
